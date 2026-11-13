@@ -1,16 +1,16 @@
-# Uploaded to Vercel: the app that builds.
-# Everything below stays in git, so it is on your Mac after pull, and is not deployed.
+# Leading slash = repo root only.
+# A bare "data" would also hide src/data, and the build cannot find the acts.
 
-AGENTS.md
-AGENTS.project.md
-startup.sh
-docs
-prompts
-data
-index.html
-chronicle
-eslint.config.mjs
-.prettierrc
+/AGENTS.md
+/AGENTS.project.md
+/startup.sh
+/docs
+/prompts
+/data
+/index.html
+/chronicle
+/eslint.config.mjs
+/.prettierrc
 
 **/*.test.ts
 **/*.test.tsx
