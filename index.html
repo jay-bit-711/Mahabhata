@@ -5,216 +5,165 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <title>Mahabharata · Adi Parva</title>
 <style>
-:root {
-  --bg: #0a0a0c;
-  --gold: #d4af37;
-  --cream: #f5f0e6;
-  --text: #e8e4dc;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; overflow-x: hidden; }
+:root { --bg:#050506; --gold:#e0b85a; --cream:#f3efe4; --fire:#ff4d1c; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); color:#eae6dc; font-family:system-ui,-apple-system,sans-serif; overflow-x:hidden; }
+.screen { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; transition:opacity .7s ease; }
+.screen.hidden { opacity:0; pointer-events:none; }
 
-/* Screens */
-.screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.8s ease; }
-.screen.hidden { opacity: 0; pointer-events: none; }
+/* CINEMATIC */
+#cinematic { background:#000; z-index:40; }
+.sky { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 80%, #3a1208 0%, #0a0505 50%, #000 80%); }
+.ground { position:absolute; bottom:0; left:0; right:0; height:28%; background:linear-gradient(to top,#1a0a06,#000); }
+.chariot {
+  position:absolute; bottom:22%; width:180px; height:60px;
+  background:linear-gradient(90deg,#3a2a1a,#6b4a2a);
+  border-radius:8px 20px 4px 4px;
+  box-shadow:0 0 30px rgba(255,80,0,.4);
+  animation:chariotMove 5s ease-in-out infinite alternate;
+}
+.chariot::before { content:""; position:absolute; top:-18px; left:20px; width:50px; height:30px; background:#4a3020; border-radius:4px; }
+.chariot::after { content:""; position:absolute; bottom:-8px; left:30px; width:12px; height:12px; background:#222; border-radius:50%; box-shadow:90px 0 0 #222; }
+@keyframes chariotMove { 0%{left:10%;} 100%{left:65%;} }
+.arrow {
+  position:absolute; width:60px; height:2px; background:linear-gradient(90deg,#fff,#ffaa00);
+  transform-origin:left center;
+  animation:arrowFly 1.8s linear infinite;
+}
+@keyframes arrowFly {
+  0% { transform:translate(0,0) rotate(-15deg); opacity:0; }
+  10% { opacity:1; }
+  100% { transform:translate(120vw,-40vh) rotate(-5deg); opacity:0; }
+}
+.fireball {
+  position:absolute; width:8px; height:8px; background:var(--fire); border-radius:50%;
+  box-shadow:0 0 20px 6px var(--fire);
+  animation:fire 3.5s ease-out infinite;
+}
+@keyframes fire {
+  0% { transform:translateY(30vh) scale(0.5); opacity:0; }
+  20% { opacity:1; }
+  100% { transform:translateY(-10vh) scale(2); opacity:0; }
+}
+.title {
+  position:relative; z-index:5;
+  font-size:clamp(2.8rem,9vw,7rem); font-weight:200; letter-spacing:.18em;
+  color:var(--gold); text-shadow:0 0 60px rgba(224,184,90,.5);
+  animation:titleIn 5s ease forwards;
+}
+@keyframes titleIn {
+  0% { opacity:0; transform:scale(.7); letter-spacing:.4em; }
+  25% { opacity:1; transform:scale(1); }
+  70% { opacity:1; }
+  100% { opacity:0; transform:scale(1.08); }
+}
+.subtitle { position:relative; z-index:5; margin-top:.6rem; letter-spacing:.4em; font-size:.9rem; opacity:0; animation:fade 5s 1s forwards; }
+@keyframes fade { to { opacity:.75; } }
 
-/* 1. Cinematic Open */
-#cinematic {
-  background: radial-gradient(ellipse at center, #1a0a0a 0%, #000 70%);
-  z-index: 30;
-}
-.embers { position: absolute; inset: 0; pointer-events: none; }
-.ember {
-  position: absolute; width: 2px; height: 2px; background: #ff6b35; border-radius: 50%;
-  animation: float 4s infinite ease-out;
-  opacity: 0;
-}
-@keyframes float {
-  0% { transform: translateY(100vh) scale(0); opacity: 0; }
-  20% { opacity: 0.8; }
-  100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
-}
-.war-text {
-  font-size: clamp(2.5rem, 8vw, 6rem);
-  font-weight: 200;
-  letter-spacing: 0.2em;
-  color: var(--gold);
-  text-align: center;
-  animation: fadeScale 4s ease forwards;
-  text-shadow: 0 0 40px rgba(212,175,55,0.4);
-}
-@keyframes fadeScale {
-  0% { opacity: 0; transform: scale(0.8); letter-spacing: 0.5em; }
-  30% { opacity: 1; transform: scale(1); }
-  70% { opacity: 1; }
-  100% { opacity: 0; transform: scale(1.05); }
-}
-.sub {
-  margin-top: 1rem;
-  font-size: 1rem;
-  letter-spacing: 0.3em;
-  opacity: 0;
-  animation: fadeIn 4s 1.2s forwards;
-}
-@keyframes fadeIn { to { opacity: 0.7; } }
+/* INTRO */
+#intro { background:linear-gradient(180deg,#0a0806,#1c120a); z-index:30; text-align:center; padding:2rem; }
+#intro h1 { font-size:clamp(2.2rem,7vw,4.2rem); font-weight:300; color:var(--gold); margin-bottom:.8rem; }
+#intro p { max-width:480px; font-size:1.15rem; line-height:1.55; color:var(--cream); }
+.bar { position:absolute; bottom:36px; width:140px; height:2px; background:#333; }
+.bar > div { height:100%; width:0; background:var(--gold); animation:load 5s linear forwards; }
+@keyframes load { to { width:100%; } }
 
-/* 2. Intro */
-#intro {
-  background: linear-gradient(180deg, #0a0a0c 0%, #1a1208 100%);
-  z-index: 20;
-  text-align: center;
-  padding: 2rem;
-}
-#intro h1 {
-  font-size: clamp(2rem, 6vw, 4rem);
-  font-weight: 300;
-  color: var(--gold);
-  margin-bottom: 1rem;
-}
-#intro p {
-  max-width: 520px;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: var(--cream);
-  opacity: 0.9;
-}
-.progress {
-  position: absolute; bottom: 40px;
-  width: 120px; height: 2px; background: #333;
-}
-.progress-bar {
-  height: 100%; width: 0; background: var(--gold);
-  animation: progress 5s linear forwards;
-}
-@keyframes progress { to { width: 100%; } }
-
-/* 3. Content */
-#content {
-  position: relative;
-  background: #faf8f5;
-  color: #1a1a1a;
-  z-index: 10;
-  overflow-y: auto;
-  padding: 24px 20px 80px;
-}
-#content.hidden { display: none; }
-.header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-.header h1 { color: #8b4513; font-weight: 500; font-size: 1.8rem; }
-.header .sub { color: #666; font-size: 0.95rem; margin-top: 4px; letter-spacing: 0; }
-
-.lang-switch {
-  display: flex; gap: 8px; justify-content: center; margin: 20px 0 28px;
-}
-.lang-switch button {
-  background: transparent; border: 1px solid #ddd; padding: 6px 14px; border-radius: 20px;
-  font-size: 0.85rem; cursor: pointer;
-}
-.lang-switch button.active { background: #8b4513; color: white; border-color: #8b4513; }
-
-.card {
-  background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-}
-.card h3 { font-size: 0.85rem; color: #8b4513; margin-bottom: 8px; letter-spacing: 0.05em; }
-.sanskrit { font-family: "Noto Serif Devanagari", "Noto Sans Telugu", serif; font-size: 1.15rem; line-height: 1.7; }
-.telugu { font-family: "Noto Sans Telugu", sans-serif; }
-
-.skip {
-  position: absolute; top: 20px; right: 20px;
-  background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white;
-  padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer;
-  z-index: 40;
-}
+/* CONTENT */
+#content { position:relative; background:#f8f5ef; color:#1c1a16; z-index:20; overflow-y:auto; padding:28px 18px 100px; }
+#content.hidden { display:none; }
+.hdr { text-align:center; margin-bottom:28px; }
+.hdr h1 { color:#8b4513; font-weight:500; font-size:1.7rem; }
+.hdr .meta { color:#666; font-size:.9rem; margin-top:4px; }
+.switch { display:flex; gap:6px; justify-content:center; margin:18px 0 26px; flex-wrap:wrap; }
+.switch button { background:transparent; border:1px solid #ddd; padding:7px 16px; border-radius:22px; font-size:.82rem; cursor:pointer; }
+.switch button.on { background:#8b4513; color:#fff; border-color:#8b4513; }
+.card { background:#fff; border-radius:14px; padding:18px 18px 16px; margin-bottom:14px; box-shadow:0 6px 24px rgba(0,0,0,.06); }
+.card h3 { font-size:.75rem; color:#8b4513; letter-spacing:.08em; margin-bottom:10px; }
+.sa { font-family:"Noto Serif Devanagari",serif; font-size:1.18rem; line-height:1.75; }
+.te { font-family:"Noto Sans Telugu",sans-serif; line-height:1.65; }
+.skip { position:absolute; top:18px; right:18px; background:transparent; border:1px solid rgba(255,255,255,.35); color:#fff; padding:6px 14px; border-radius:20px; font-size:.78rem; cursor:pointer; z-index:50; }
 </style>
 </head>
 <body>
+<button class="skip" onclick="skip()">Skip</button>
 
-<button class="skip" onclick="skipToContent()">Skip</button>
-
-<!-- 1. Cinematic -->
 <div id="cinematic" class="screen">
-  <div class="embers" id="embers"></div>
-  <div class="war-text">KURUKSHETRA</div>
-  <div class="sub">THE GREAT WAR</div>
+  <div class="sky"></div>
+  <div class="ground"></div>
+  <div class="chariot"></div>
+  <div id="arrows"></div>
+  <div id="fires"></div>
+  <div class="title">KURUKSHETRA</div>
+  <div class="subtitle">EIGHTEEN DAYS · ONE AGE ENDS</div>
 </div>
 
-<!-- 2. Intro -->
 <div id="intro" class="screen hidden">
   <h1>Mahabharata</h1>
-  <p>The epic of dharma, kinship, and the war that ended an age.<br>Told in scroll · Sanskrit · English · Telugu</p>
-  <div class="progress"><div class="progress-bar"></div></div>
+  <p>The war that consumed dynasties.<br>Dharma, desire, and the cost of victory.<br><span style="opacity:.7;font-size:.9rem">Sanskrit · English · Telugu</span></p>
+  <div class="bar"><div></div></div>
 </div>
 
-<!-- 3. Content -->
-<div id="content" class="screen hidden" style="position:relative; align-items:stretch; justify-content:flex-start;">
-  <div class="header">
+<div id="content" class="screen hidden" style="align-items:stretch;justify-content:flex-start;">
+  <div class="hdr">
     <h1>Adi Parva · Adhyaya 1</h1>
-    <div class="sub">Anukramanika — The Arrival at Naimisha</div>
+    <div class="meta">Anukramanika Parva — Arrival at Naimisha</div>
+  </div>
+  <div class="switch">
+    <button class="on" onclick="lang('all')">All</button>
+    <button onclick="lang('sa')">Sanskrit</button>
+    <button onclick="lang('en')">English</button>
+    <button onclick="lang('te')">Telugu</button>
   </div>
 
-  <div class="lang-switch">
-    <button class="active" onclick="setLang('all')">All</button>
-    <button onclick="setLang('sa')">Sanskrit</button>
-    <button onclick="setLang('en')">English</button>
-    <button onclick="setLang('te')">Telugu</button>
-  </div>
-
-  <div class="card" data-lang="sa">
+  <div class="card" data-l="sa">
     <h3>SANSKRIT</h3>
-    <p class="sanskrit">नारायणं नमस्कृत्य नरं चैव नरोत्तमम्।<br>देवीं सरस्वतीं चैव ततो जयमुदीरयेत् ॥</p>
+    <p class="sa">नारायणं नमस्कृत्य नरं चैव नरोत्तमम्।<br>देवीं सरस्वतीं चैव ततो जयमुदीरयेत् ॥</p>
   </div>
 
-  <div class="card" data-lang="en">
+  <div class="card" data-l="en">
     <h3>ENGLISH</h3>
-    <p>Having bowed to Narayana, and to Nara the supreme among men, and to the goddess Sarasvati, then let Jaya be uttered.</p>
-    <p style="margin-top:12px">Ugrasrava Sauti approached the sages seated in the Naimisha forest at the twelve-year sacrifice of Kulapati Shaunaka and was asked to narrate the great Bharata.</p>
+    <p>Having bowed to Narayana and to Nara the foremost of men, and to the goddess Sarasvati, then let the word of victory be spoken.</p>
+    <p style="margin-top:14px">In the Naimisha forest, at the twelve-year sacrifice of Kulapati Shaunaka, the sages sat in ease. Ugrasrava, son of Lomaharshana, a Sauti learned in the Puranas, approached them with humility.</p>
+    <p style="margin-top:10px;color:#555">They welcomed him and asked him to narrate the great history of the Bharatas.</p>
   </div>
 
-  <div class="card" data-lang="te">
+  <div class="card" data-l="te">
     <h3>TELUGU</h3>
-    <p class="telugu">నారాయణుని, నరోత్తమునైన నరుని, దेवి సరస్వతిని నమస్కరించి తరువాత जय ను ఉదీరించవలి.</p>
-    <p class="telugu" style="margin-top:12px">నైమిషారణ్యంలో శ౗నక కులపతి యొక్క ప్రారంభించిన ప్రతిజ్ఞాన సత్రంలో ఉగ్రశ్రవుడు వినయముగా వచ్చినాడు.</p>
+    <p class="te">నారాయణుని, నరోత్తమునైన నరుని, దेवి సరస్వతిని నమస్కరించి తరువాత जयను ఉదీరించవలి.</p>
+    <p class="te" style="margin-top:14px">నైమిషారణ్యంలో శ౗నక కులపతి యొక్క ప్రారంభించిన ప్రతిజ్ఞాన సత్రంలో ఉగ్రశ్రవుడు వినయముగా వచ్చినాడు. మహాభారత కథను అడిగారు.</p>
   </div>
 </div>
 
 <script>
-// Embers
-const embers = document.getElementById('embers');
-for (let i = 0; i < 40; i++) {
-  const e = document.createElement('div');
-  e.className = 'ember';
-  e.style.left = Math.random() * 100 + '%';
-  e.style.animationDelay = Math.random() * 3 + 's';
-  e.style.animationDuration = (3 + Math.random() * 3) + 's';
-  embers.appendChild(e);
+const arrows = document.getElementById('arrows');
+for(let i=0;i<18;i++){
+  const a=document.createElement('div'); a.className='arrow';
+  a.style.top=(15+Math.random()*50)+'%';
+  a.style.left=(Math.random()*20-10)+'%';
+  a.style.animationDelay=(Math.random()*2.5)+'s';
+  a.style.animationDuration=(1.4+Math.random()*1.2)+'s';
+  arrows.appendChild(a);
 }
-
-function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+const fires=document.getElementById('fires');
+for(let i=0;i<28;i++){
+  const f=document.createElement('div'); f.className='fireball';
+  f.style.left=(Math.random()*100)+'%';
+  f.style.animationDelay=(Math.random()*3)+'s';
+  f.style.animationDuration=(2.5+Math.random()*2)+'s';
+  fires.appendChild(f);
+}
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
-
-function skipToContent() {
-  document.querySelector('.skip').style.display = 'none';
-  show('content');
-}
-
-// Sequence
-setTimeout(() => show('intro'), 4000);
-setTimeout(() => {
-  document.querySelector('.skip').style.display = 'none';
-  show('content');
-}, 9000);
-
-// Language
-function setLang(lang) {
-  document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.querySelectorAll('.card').forEach(c => {
-    c.style.display = (lang === 'all' || c.dataset.lang === lang) ? 'block' : 'none';
+function skip(){ document.querySelector('.skip').style.display='none'; show('content'); }
+setTimeout(()=>show('intro'),4800);
+setTimeout(()=>{ document.querySelector('.skip').style.display='none'; show('content'); },9800);
+function lang(l){
+  document.querySelectorAll('.switch button').forEach(b=>b.classList.remove('on'));
+  event.target.classList.add('on');
+  document.querySelectorAll('.card').forEach(c=>{
+    c.style.display=(l==='all'||c.dataset.l===l)?'block':'none';
   });
 }
 </script>
