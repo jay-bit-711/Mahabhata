@@ -125,3 +125,91 @@ export function sakugaSwell(kind: "vastraharan" | "virata" | "wheel" | "pyre") {
   osc.stop(now + 1.85);
   if (kind === "vastraharan" || kind === "pyre") conch();
 }
+
+export function vowDrop() {
+  const c = context();
+  const now = c.currentTime;
+  const gain = c.createGain();
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.linearRampToValueAtTime(0.045, now + 0.35);
+  gain.gain.setValueAtTime(0.04, now + 2.4);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 4.2);
+  gain.connect(c.destination);
+  for (const [start, end, type] of [
+    [196, 49, "sine"],
+    [294, 73, "triangle"],
+  ] as const) {
+    const osc = c.createOscillator();
+    osc.type = type;
+    osc.frequency.setValueAtTime(start, now);
+    osc.frequency.exponentialRampToValueAtTime(end, now + 3.4);
+    osc.connect(gain);
+    osc.start();
+    osc.stop(now + 4.3);
+  }
+}
+
+export function drip() {
+  const c = context();
+  const now = c.currentTime;
+  const osc = c.createOscillator();
+  const gain = c.createGain();
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(180, now);
+  osc.frequency.exponentialRampToValueAtTime(70, now + 0.18);
+  gain.gain.setValueAtTime(0.03, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+  osc.connect(gain);
+  gain.connect(c.destination);
+  osc.start();
+  osc.stop(now + 0.22);
+}
+
+export function shatterHit() {
+  const c = context();
+  const now = c.currentTime;
+  const length = Math.floor(c.sampleRate * 0.35);
+  const buffer = c.createBuffer(1, length, c.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / length) ** 2;
+  const src = c.createBufferSource();
+  src.buffer = buffer;
+  const filter = c.createBiquadFilter();
+  filter.type = "highpass";
+  filter.frequency.value = 1400;
+  const gain = c.createGain();
+  gain.gain.setValueAtTime(0.16, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+  src.connect(filter);
+  filter.connect(gain);
+  gain.connect(c.destination);
+  src.start();
+  const osc = c.createOscillator();
+  const low = c.createGain();
+  osc.type = "sawtooth";
+  osc.frequency.setValueAtTime(90, now);
+  osc.frequency.exponentialRampToValueAtTime(32, now + 0.4);
+  low.gain.setValueAtTime(0.06, now);
+  low.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+  osc.connect(low);
+  low.connect(c.destination);
+  osc.start();
+  osc.stop(now + 0.46);
+}
+
+export function silkStream() {
+  const c = context();
+  const now = c.currentTime;
+  const osc = c.createOscillator();
+  const gain = c.createGain();
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(520, now);
+  osc.frequency.exponentialRampToValueAtTime(880, now + 2.2);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.linearRampToValueAtTime(0.02, now + 0.4);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 2.6);
+  osc.connect(gain);
+  gain.connect(c.destination);
+  osc.start();
+  osc.stop(now + 2.7);
+}

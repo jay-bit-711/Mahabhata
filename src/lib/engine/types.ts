@@ -31,6 +31,10 @@ export type GameTrigger = {
   title: Line;
 };
 
+export type Rite = "vow" | "seal" | "shatter" | "silk" | "hair";
+
+export type Air = "lac";
+
 export type Beat = {
   speaker?: string;
   emotion?: Emotion;
@@ -38,6 +42,10 @@ export type Beat = {
   shake?: boolean;
   line: Line;
   intent?: Line;
+  /** Sensory override. The stage paints it only while this beat is the one on screen. */
+  rite?: Rite;
+  /** The chronicle will not move on until the reader has held this long. */
+  holdMs?: number;
 };
 
 export type VowMark = {
@@ -57,6 +65,8 @@ export type Scene = {
   kala: number;
   beats: Beat[];
   vows?: VowMark[];
+  /** House of lac: the walls sweat, and every tap is a small shake. */
+  air?: Air;
   /** Full-screen climax. vastraharan, virata, and wheel are reserved for acts 13, 17, and the wheel-day. */
   sakuga?: Sakuga;
   choices?: Choice[];

@@ -1,4 +1,4 @@
-import type { Beat, Chapter, Emotion, Line, Voice } from "@/lib/engine/types";
+import type { Beat, Chapter, Emotion, Line, Rite, Voice } from "@/lib/engine/types";
 
 function line(sa: string, en: string, te: string): Line {
   return { sa, en, te };
@@ -9,7 +9,7 @@ function beat(
   sa: string,
   en: string,
   te: string,
-  extra?: { speaker?: string; emotion?: Emotion; shake?: boolean; intent?: Line },
+  extra?: { speaker?: string; emotion?: Emotion; shake?: boolean; intent?: Line; rite?: Rite; holdMs?: number },
 ): Beat {
   return { voice, line: line(sa, en, te), ...extra };
 }
@@ -166,12 +166,23 @@ export const sabhaChapters: Chapter[] = [
         sakuga: "vastraharan",
         vows: [{ id: "draupadi-hair", name: "Draupadi's unbound hair", state: "lock" }],
         beats: [
-          beat("boom", "वस्त्रम्।", "He pulls. The cloth does not end. The hall wanted a body. It receives a miracle it did not earn, and still does not stand up.", "అతడు లాగుతాడు. వస్త్రం అయిపోదు. సభకు ఒక శరీరం కావాలి. అది పొందని అద్భుతం వస్తుంది. అయినా ఎవరూ లేవరు.", { speaker: "The cloth", shake: true }),
-          beat("whisper", "न कृपा केवलम्।", "Call it grace if you need a softer word. She will not. She felt every tug before the next length came.", "మెత్తని మాట కావాలంటే దయ అను. ఆమె అనదు. తరువాతి వస్త్రం రాకముందు ప్రతి లాగు తెలిసింది.", {
-            speaker: "Draupadi",
-            intent: line("सः रक्षति। अहं स्मरामि।", "He keeps the cloth on me. I will keep the faces. Both are worship. Only one of them is mine.", "అతడు వస్త్రం ఉంచుతాడు. నేను ముఖాలు ఉంచుకుంటాను. రెండూ పూజ. నాది ఒక్కటే."),
+          beat("boom", "वस्त्रम्।", "He pulls. The cloth should end. It does not. The hall wanted a body.", "అతడు లాగుతాడు. వస్త్రం అయిపోవాలి. అయిపోదు. సభకు ఒక శరీరం కావాలి.", {
+            speaker: "The cloth",
+            shake: true,
+            rite: "shatter",
           }),
-          beat("boom", "रक्तेन बध्नामि।", "I will not tie this hair again until it is washed in Dushasana's blood. Remember the sentence. The war will only be its echo.", "దుశ్శాసనుడి రక్తంతో ఈ జుట్టు ఉదుకునే వరకు మళ్ళీ కట్టను. ఈ వాక్యం గుర్తుంచుకో. యుద్ధం దాని ప్రతిధ్వని మాత్రమే.", { speaker: "Draupadi", shake: true, emotion: "wrath" }),
+          beat("whisper", "न कृपा केवलम्।", "Length after length. He is not in the chair. He is in the inch that will not finish.", "వస్త్రం వస్త్రం వెనుక. అతడు కుర్చీలో లేడు. అయిపోని అంగుళంలో ఉన్నాడు.", {
+            speaker: "Draupadi",
+            rite: "silk",
+            intent: line("सः रक्षति। अहं स्मरामि।", "He keeps the cloth on me. I keep the faces. Only one of those is mine.", "అతడు వస్త్రం ఉంచుతాడు. నేను ముఖాలు ఉంచుకుంటాను. నాది ఒక్కటే."),
+          }),
+          beat("boom", "रक्तेन बध्नामि।", "This hair stays open until it is washed in Dushasana's blood.", "దుశ్శాసనుడి రక్తంతో ఉదుకునే వరకు ఈ జుట్టు విప్పే ఉంటుంది.", {
+            speaker: "Draupadi",
+            shake: true,
+            emotion: "wrath",
+            rite: "hair",
+            holdMs: 2800,
+          }),
         ],
       },
     ],

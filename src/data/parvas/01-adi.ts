@@ -1,4 +1,4 @@
-import type { Beat, Chapter, Emotion, Line, Voice, VowMark } from "@/lib/engine/types";
+import type { Beat, Chapter, Emotion, Line, Rite, Voice, VowMark } from "@/lib/engine/types";
 
 function line(sa: string, en: string, te: string): Line {
   return { sa, en, te };
@@ -9,7 +9,7 @@ function beat(
   sa: string,
   en: string,
   te: string,
-  extra?: { speaker?: string; emotion?: Emotion; shake?: boolean; intent?: Line },
+  extra?: { speaker?: string; emotion?: Emotion; shake?: boolean; intent?: Line; rite?: Rite; holdMs?: number },
 ): Beat {
   return { voice, line: line(sa, en, te), ...extra };
 }
@@ -48,7 +48,13 @@ export const adiChapters: Chapter[] = [
         vows: [vowLock],
         beats: [
           beat("speak", "राज्यं त्यजामि।", "He gives away the throne in a clear voice, so the ferryman can count it.", "సింహాసనాన్ని స్పష్టమైన స్వరంతో వదులుతాడు. పడవవాడు లెక్క పెట్టేంత స్పష్టంగా.", { speaker: "Devavrata" }),
-          beat("boom", "ब्रह्मचर्यम्।", "Then he gives away the rest. No wife. No child. No one who could ever claim what he just refused.", "తరువాత మిగిలింది కూడా ఇస్తాడు. భార్య లేదు. బిడ్డ లేదు. తాను వద్దనుకున్నదాన్ని అడిగే వాడు లేడు.", { speaker: "Devavrata", shake: true, emotion: "wrath" }),
+          beat("boom", "ब्रह्मचर्यम्।", "Then the rest. No wife. No son. No one who could ever ask for the throne he just set down.", "తరువాత మిగిలింది. భార్య లేదు. కొడుకు లేదు. తాను వదిలిన సింహాసనం అడిగే వాడు లేడు.", {
+            speaker: "Devavrata",
+            shake: true,
+            emotion: "wrath",
+            rite: "vow",
+            holdMs: 2600,
+          }),
           beat("whisper", "देवाः पुष्पाणि वर्षन्ति।", "Flowers fall. The court calls it divine. The flowers do not know they are burying a future.", "పూలు రాలుతాయి. సభ దైవికమంటుంది. పూలకు తెలియదు, ఒక భవిష్యత్తును పూడుస్తున్నాయని.", {
             speaker: "The court",
             intent: line("कालः प्रथमं पदं नयति।", "This is the first step of the clock. Everything after is interest.", "ఇది గడియారపు మొదటి అడుగు. తరువాతదంతా వడ్డీ."),
@@ -297,9 +303,19 @@ export const adiChapters: Chapter[] = [
         place: "Hastinapura",
         image: "/chronicle/sauti.jpg",
         kala: 62,
+        air: "lac",
         beats: [
-          beat("whisper", "लाक्षा।", "Vidura does not say murder. He says: the house they have gifted you will love a flame. A miner who speaks in riddles is already under the floor.", "విదురుడు హత్య అనడు. మీకు ఇచ్చిన ఇల్లు మంటను ప్రేమిస్తుందంటాడు. పొడల్లో ఇప్పటికే ఒక తవ్వకపు మనిషి.", { speaker: "Vidura" }),
-          beat("speak", "विश्वासः विषम्।", "The welcome at Varanavata is perfect. Perfect welcomes are how this family kills.", "వారణావతం ఆహ్వానం పరిపూర్ణం. ఈ వంశం అలా చంపుతుంది.", { speaker: "Vidura" }),
+          beat("whisper", "लाक्षा।", "Vidura does not say murder. He says the house they have gifted you will love a flame.", "విదురుడు హత్య అనడు. మీకు ఇచ్చిన ఇల్లు మంటను ప్రేమిస్తుందంటాడు.", { speaker: "Vidura" }),
+          beat("speak", "विश्वासः विषम्।", "The welcome is perfect. Perfect welcomes are how this family kills.", "ఆహ్వానం పరిపూర్ణం. ఈ వంశం అలా చంపుతుంది.", { speaker: "Vidura" }),
+          beat("whisper", "म्लेच्छभाषा।", "Under the floor he changes tongue. The hall would call it a courtesy. It is not meant for the hall.", "నేల కింద అతడు మాట మారుస్తాడు. సభ దాన్ని మర్యాద అంటుంది. అది సభ కోసం కాదు.", {
+            speaker: "Vidura",
+            rite: "seal",
+            intent: line(
+              "सुरङ्गा दक्षिणतः। वायुः पूर्वे। अधः गच्छ।",
+              "The tunnel is under the south wall. When the wind comes from the east, the lacquer takes the house. Go down. Do not turn toward the feast.",
+              "సొరంగం దక్షిణ గోడ కింద. గాలి తూర్పు నుంచి వచ్చినప్పుడు లక్క ఇంటిని తీసుకుంటుంది. కిందకు దిగు. విందు వైపు తిరగకు.",
+            ),
+          }),
         ],
         choices: [
           {
@@ -324,6 +340,7 @@ export const adiChapters: Chapter[] = [
         image: "/chronicle/fire.jpg",
         video: "/chronicle/fire.mp4",
         kala: 70,
+        air: "lac",
         sakuga: "pyre",
         beats: [
           beat("whisper", "वातः पूर्वतः।", "The wind is from the east, as the riddle promised. Lacquer does not burn like wood. It burns like a decision.", "గాలి తూర్పు నుంచి. పొడ చెప్పినట్టే. లాక్కు కలపలా కాదు. ఒక నిర్ణయంలా కాలుతుంది.", { speaker: "The house" }),
