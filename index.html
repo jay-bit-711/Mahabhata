@@ -3,168 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>Mahabharata · Adi Parva</title>
+<title>Mahabharata · Anime Epic</title>
 <style>
-:root { --bg:#050506; --gold:#e0b85a; --cream:#f3efe4; --fire:#ff4d1c; }
+:root {
+  --bg:#0c0a08; --gold:#f0c14b; --fire:#ff5a1f; --cream:#f7f1e6;
+  --card:#fff; --accent:#c2410c;
+}
 * { box-sizing:border-box; margin:0; padding:0; }
-body { background:var(--bg); color:#eae6dc; font-family:system-ui,-apple-system,sans-serif; overflow-x:hidden; }
-.screen { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; transition:opacity .7s ease; }
+body { background:var(--bg); color:#eee; font-family:system-ui,-apple-system,sans-serif; }
+.screen { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; transition:opacity .6s; }
 .screen.hidden { opacity:0; pointer-events:none; }
 
-/* CINEMATIC */
-#cinematic { background:#000; z-index:40; }
-.sky { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 80%, #3a1208 0%, #0a0505 50%, #000 80%); }
-.ground { position:absolute; bottom:0; left:0; right:0; height:28%; background:linear-gradient(to top,#1a0a06,#000); }
-.chariot {
-  position:absolute; bottom:22%; width:180px; height:60px;
-  background:linear-gradient(90deg,#3a2a1a,#6b4a2a);
-  border-radius:8px 20px 4px 4px;
-  box-shadow:0 0 30px rgba(255,80,0,.4);
-  animation:chariotMove 5s ease-in-out infinite alternate;
-}
-.chariot::before { content:""; position:absolute; top:-18px; left:20px; width:50px; height:30px; background:#4a3020; border-radius:4px; }
-.chariot::after { content:""; position:absolute; bottom:-8px; left:30px; width:12px; height:12px; background:#222; border-radius:50%; box-shadow:90px 0 0 #222; }
-@keyframes chariotMove { 0%{left:10%;} 100%{left:65%;} }
-.arrow {
-  position:absolute; width:60px; height:2px; background:linear-gradient(90deg,#fff,#ffaa00);
-  transform-origin:left center;
-  animation:arrowFly 1.8s linear infinite;
-}
-@keyframes arrowFly {
-  0% { transform:translate(0,0) rotate(-15deg); opacity:0; }
-  10% { opacity:1; }
-  100% { transform:translate(120vw,-40vh) rotate(-5deg); opacity:0; }
-}
-.fireball {
-  position:absolute; width:8px; height:8px; background:var(--fire); border-radius:50%;
-  box-shadow:0 0 20px 6px var(--fire);
-  animation:fire 3.5s ease-out infinite;
-}
-@keyframes fire {
-  0% { transform:translateY(30vh) scale(0.5); opacity:0; }
-  20% { opacity:1; }
-  100% { transform:translateY(-10vh) scale(2); opacity:0; }
-}
-.title {
-  position:relative; z-index:5;
-  font-size:clamp(2.8rem,9vw,7rem); font-weight:200; letter-spacing:.18em;
-  color:var(--gold); text-shadow:0 0 60px rgba(224,184,90,.5);
-  animation:titleIn 5s ease forwards;
-}
-@keyframes titleIn {
-  0% { opacity:0; transform:scale(.7); letter-spacing:.4em; }
-  25% { opacity:1; transform:scale(1); }
-  70% { opacity:1; }
-  100% { opacity:0; transform:scale(1.08); }
-}
-.subtitle { position:relative; z-index:5; margin-top:.6rem; letter-spacing:.4em; font-size:.9rem; opacity:0; animation:fade 5s 1s forwards; }
-@keyframes fade { to { opacity:.75; } }
+#cinematic { background:#000; z-index:50; }
+.sky { position:absolute; inset:0; background:radial-gradient(circle at 50% 70%, #4a1c0a, #000 70%); }
+.chariot { position:absolute; bottom:18%; width:200px; height:70px; background:linear-gradient(90deg,#5a3a22,#8b5a2b); border-radius:10px 30px 6px 6px; box-shadow:0 0 40px rgba(255,90,30,.5); animation:drive 6s ease-in-out infinite alternate; }
+.chariot::before { content:""; position:absolute; top:-22px; left:25px; width:55px; height:35px; background:#3a2415; border-radius:6px; }
+@keyframes drive { from{left:5%} to{left:70%} }
+.arrow { position:absolute; width:70px; height:3px; background:linear-gradient(90deg,#fff,#ffcc00); animation:fly 2s linear infinite; }
+@keyframes fly { 0%{transform:translateX(-10vw) translateY(20vh) rotate(-20deg);opacity:0} 15%{opacity:1} 100%{transform:translateX(110vw) translateY(-30vh) rotate(-8deg);opacity:0} }
+.fire { position:absolute; width:10px; height:10px; background:var(--fire); border-radius:50%; box-shadow:0 0 25px var(--fire); animation:rise 4s ease-out infinite; }
+@keyframes rise { 0%{transform:translateY(40vh) scale(.4);opacity:0} 20%{opacity:1} 100%{transform:translateY(-15vh) scale(2.2);opacity:0} }
+.big { position:relative; z-index:2; font-size:clamp(3rem,10vw,8rem); font-weight:200; letter-spacing:.12em; color:var(--gold); text-shadow:0 0 50px rgba(240,193,75,.6); animation:pop 5.2s ease forwards; }
+@keyframes pop { 0%{opacity:0;transform:scale(.6)} 30%{opacity:1;transform:scale(1)} 75%{opacity:1} 100%{opacity:0;transform:scale(1.1)} }
+.sub { position:relative; z-index:2; letter-spacing:.35em; margin-top:.5rem; opacity:0; animation:fade 5s 1.1s forwards; }
+@keyframes fade { to{opacity:.8} }
 
-/* INTRO */
-#intro { background:linear-gradient(180deg,#0a0806,#1c120a); z-index:30; text-align:center; padding:2rem; }
-#intro h1 { font-size:clamp(2.2rem,7vw,4.2rem); font-weight:300; color:var(--gold); margin-bottom:.8rem; }
-#intro p { max-width:480px; font-size:1.15rem; line-height:1.55; color:var(--cream); }
-.bar { position:absolute; bottom:36px; width:140px; height:2px; background:#333; }
-.bar > div { height:100%; width:0; background:var(--gold); animation:load 5s linear forwards; }
-@keyframes load { to { width:100%; } }
+#intro { background:linear-gradient(180deg,#120e0a,#2a1a0e); z-index:40; text-align:center; padding:2rem; }
+#intro h1 { font-size:clamp(2.4rem,8vw,5rem); color:var(--gold); font-weight:300; }
+#intro p { max-width:460px; margin-top:1rem; font-size:1.15rem; line-height:1.5; color:var(--cream); }
+.prog { position:absolute; bottom:40px; width:150px; height:3px; background:#333; }
+.prog div { height:100%; width:0; background:var(--gold); animation:bar 5s linear forwards; }
+@keyframes bar { to{width:100%} }
 
-/* CONTENT */
-#content { position:relative; background:#f8f5ef; color:#1c1a16; z-index:20; overflow-y:auto; padding:28px 18px 100px; }
+#content { position:relative; background:#faf7f2; color:#1a1612; z-index:30; overflow-y:auto; padding:20px 16px 120px; }
 #content.hidden { display:none; }
-.hdr { text-align:center; margin-bottom:28px; }
-.hdr h1 { color:#8b4513; font-weight:500; font-size:1.7rem; }
-.hdr .meta { color:#666; font-size:.9rem; margin-top:4px; }
-.switch { display:flex; gap:6px; justify-content:center; margin:18px 0 26px; flex-wrap:wrap; }
-.switch button { background:transparent; border:1px solid #ddd; padding:7px 16px; border-radius:22px; font-size:.82rem; cursor:pointer; }
-.switch button.on { background:#8b4513; color:#fff; border-color:#8b4513; }
-.card { background:#fff; border-radius:14px; padding:18px 18px 16px; margin-bottom:14px; box-shadow:0 6px 24px rgba(0,0,0,.06); }
-.card h3 { font-size:.75rem; color:#8b4513; letter-spacing:.08em; margin-bottom:10px; }
-.sa { font-family:"Noto Serif Devanagari",serif; font-size:1.18rem; line-height:1.75; }
-.te { font-family:"Noto Sans Telugu",sans-serif; line-height:1.65; }
-.skip { position:absolute; top:18px; right:18px; background:transparent; border:1px solid rgba(255,255,255,.35); color:#fff; padding:6px 14px; border-radius:20px; font-size:.78rem; cursor:pointer; z-index:50; }
+.topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.level { background:#c2410c; color:#fff; padding:6px 14px; border-radius:20px; font-size:.8rem; font-weight:600; }
+.hdr { text-align:center; margin:10px 0 24px; }
+.hdr h1 { color:var(--accent); font-size:1.65rem; }
+.meta { color:#777; font-size:.88rem; }
+.switch { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-bottom:20px; }
+.switch button { border:1px solid #ddd; background:#fff; padding:8px 16px; border-radius:20px; font-size:.8rem; cursor:pointer; }
+.switch button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.card { background:#fff; border-radius:16px; padding:16px; margin-bottom:16px; box-shadow:0 8px 30px rgba(0,0,0,.07); }
+.visual { width:100%; height:180px; background:#eee; border-radius:12px; margin-bottom:12px; display:flex; align-items:center; justify-content:center; color:#999; font-size:.85rem; overflow:hidden; }
+.visual video, .visual img { width:100%; height:100%; object-fit:cover; }
+.sa { font-family:"Noto Serif Devanagari",serif; font-size:1.2rem; line-height:1.7; }
+.te { font-family:"Noto Sans Telugu",sans-serif; }
+.support { background:#1a120c; color:#f7f1e6; border-radius:16px; padding:20px; margin-top:28px; text-align:center; }
+.support h3 { color:var(--gold); margin-bottom:8px; }
+.upi { background:#fff; color:#1a120c; padding:10px 16px; border-radius:12px; font-weight:600; margin:10px 0; display:inline-block; }
+.amounts { display:flex; gap:8px; justify-content:center; margin:12px 0; }
+.amounts button { background:var(--gold); color:#1a120c; border:none; padding:10px 18px; border-radius:20px; font-weight:600; cursor:pointer; }
+.coming { font-size:.8rem; opacity:.6; margin-top:8px; }
+.skip { position:absolute; top:16px; right:16px; background:transparent; border:1px solid rgba(255,255,255,.4); color:#fff; padding:6px 12px; border-radius:20px; z-index:60; cursor:pointer; }
 </style>
 </head>
 <body>
-<button class="skip" onclick="skip()">Skip</button>
+<button class="skip" onclick="goContent()">Skip</button>
 
 <div id="cinematic" class="screen">
   <div class="sky"></div>
-  <div class="ground"></div>
   <div class="chariot"></div>
-  <div id="arrows"></div>
-  <div id="fires"></div>
-  <div class="title">KURUKSHETRA</div>
-  <div class="subtitle">EIGHTEEN DAYS · ONE AGE ENDS</div>
+  <div id="fx"></div>
+  <div class="big">KURUKSHETRA</div>
+  <div class="sub">ANIME EPIC · 18 DAYS</div>
 </div>
 
 <div id="intro" class="screen hidden">
   <h1>Mahabharata</h1>
-  <p>The war that consumed dynasties.<br>Dharma, desire, and the cost of victory.<br><span style="opacity:.7;font-size:.9rem">Sanskrit · English · Telugu</span></p>
-  <div class="bar"><div></div></div>
+  <p>The story everyone knows — now in anime form.<br>Scroll, switch languages, level up through the Parvas.</p>
+  <div class="prog"><div></div></div>
 </div>
 
-<div id="content" class="screen hidden" style="align-items:stretch;justify-content:flex-start;">
-  <div class="hdr">
-    <h1>Adi Parva · Adhyaya 1</h1>
-    <div class="meta">Anukramanika Parva — Arrival at Naimisha</div>
+<div id="content" class="screen hidden" style="align-items:stretch; justify-content:flex-start;">
+  <div class="topbar">
+    <div class="level">Level 1 · Adi Parva</div>
+    <div style="font-size:.8rem; color:#666">0 / 18 Parvas</div>
   </div>
+
+  <div class="hdr">
+    <h1>Adhyaya 1</h1>
+    <div class="meta">Anukramanika — The Sauti arrives</div>
+  </div>
+
   <div class="switch">
-    <button class="on" onclick="lang('all')">All</button>
-    <button onclick="lang('sa')">Sanskrit</button>
-    <button onclick="lang('en')">English</button>
-    <button onclick="lang('te')">Telugu</button>
+    <button class="on" onclick="setL('all')">All</button>
+    <button onclick="setL('sa')">Sanskrit</button>
+    <button onclick="setL('en')">English</button>
+    <button onclick="setL('te')">Telugu</button>
   </div>
 
   <div class="card" data-l="sa">
-    <h3>SANSKRIT</h3>
+    <div class="visual">[Image · Sauti approaching the sages]</div>
+    <h3 style="color:var(--accent); font-size:.75rem; letter-spacing:.05em; margin-bottom:8px">SANSKRIT</h3>
     <p class="sa">नारायणं नमस्कृत्य नरं चैव नरोत्तमम्।<br>देवीं सरस्वतीं चैव ततो जयमुदीरयेत् ॥</p>
   </div>
 
   <div class="card" data-l="en">
-    <h3>ENGLISH</h3>
-    <p>Having bowed to Narayana and to Nara the foremost of men, and to the goddess Sarasvati, then let the word of victory be spoken.</p>
-    <p style="margin-top:14px">In the Naimisha forest, at the twelve-year sacrifice of Kulapati Shaunaka, the sages sat in ease. Ugrasrava, son of Lomaharshana, a Sauti learned in the Puranas, approached them with humility.</p>
-    <p style="margin-top:10px;color:#555">They welcomed him and asked him to narrate the great history of the Bharatas.</p>
+    <div class="visual">[GIF · Bowing to Narayana]</div>
+    <h3 style="color:var(--accent); font-size:.75rem; letter-spacing:.05em; margin-bottom:8px">ENGLISH</h3>
+    <p>Having bowed to Narayana and Nara the foremost of men, and to Sarasvati, then let Jaya be uttered.</p>
+    <p style="margin-top:12px">Ugrasrava Sauti arrives at the Naimisha satra of Shaunaka and is asked to tell the great Bharata.</p>
   </div>
 
   <div class="card" data-l="te">
-    <h3>TELUGU</h3>
-    <p class="te">నారాయణుని, నరోత్తమునైన నరుని, దेवి సరస్వతిని నమస్కరించి తరువాత जयను ఉదీరించవలి.</p>
-    <p class="te" style="margin-top:14px">నైమిషారణ్యంలో శ౗నక కులపతి యొక్క ప్రారంభించిన ప్రతిజ్ఞాన సత్రంలో ఉగ్రశ్రవుడు వినయముగా వచ్చినాడు. మహాభారత కథను అడిగారు.</p>
+    <div class="visual">
+      <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;background:#222">
+        <source src="" type="video/mp4">
+        [Video · autoplay placeholder]
+      </video>
+    </div>
+    <h3 style="color:var(--accent); font-size:.75rem; letter-spacing:.05em; margin-bottom:8px">TELUGU</h3>
+    <p class="te">నారాయణుని, నరోత్తమునైన నరుని, సరస్వతిని నమస్కరించి తరువాత जयను ఉదీరించవలి.</p>
+  </div>
+
+  <div class="support">
+    <h3>Support the Epic</h3>
+    <p style="font-size:.9rem; margin-bottom:8px">Help build the full anime Mahabharata</p>
+    <div class="upi">jayanthedara1@ybl</div>
+    <div class="amounts">
+      <button onclick="pay(10)">₹10</button>
+      <button onclick="pay(15)">₹15</button>
+    </div>
+    <div class="coming">Other modes (cards, international) — Coming Soon</div>
   </div>
 </div>
 
 <script>
-const arrows = document.getElementById('arrows');
-for(let i=0;i<18;i++){
+const fx = document.getElementById('fx');
+for(let i=0;i<22;i++){
   const a=document.createElement('div'); a.className='arrow';
-  a.style.top=(15+Math.random()*50)+'%';
-  a.style.left=(Math.random()*20-10)+'%';
-  a.style.animationDelay=(Math.random()*2.5)+'s';
-  a.style.animationDuration=(1.4+Math.random()*1.2)+'s';
-  arrows.appendChild(a);
+  a.style.top=(10+Math.random()*60)+'%'; a.style.animationDelay=Math.random()*2+'s';
+  fx.appendChild(a);
 }
-const fires=document.getElementById('fires');
-for(let i=0;i<28;i++){
-  const f=document.createElement('div'); f.className='fireball';
-  f.style.left=(Math.random()*100)+'%';
-  f.style.animationDelay=(Math.random()*3)+'s';
-  f.style.animationDuration=(2.5+Math.random()*2)+'s';
-  fires.appendChild(f);
+for(let i=0;i<20;i++){
+  const f=document.createElement('div'); f.className='fire';
+  f.style.left=Math.random()*100+'%'; f.style.animationDelay=Math.random()*3+'s';
+  fx.appendChild(f);
 }
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
-function skip(){ document.querySelector('.skip').style.display='none'; show('content'); }
-setTimeout(()=>show('intro'),4800);
-setTimeout(()=>{ document.querySelector('.skip').style.display='none'; show('content'); },9800);
-function lang(l){
+function goContent(){ document.querySelector('.skip').style.display='none'; show('content'); }
+setTimeout(()=>show('intro'),5000);
+setTimeout(goContent,10000);
+function setL(l){
   document.querySelectorAll('.switch button').forEach(b=>b.classList.remove('on'));
   event.target.classList.add('on');
-  document.querySelectorAll('.card').forEach(c=>{
-    c.style.display=(l==='all'||c.dataset.l===l)?'block':'none';
-  });
+  document.querySelectorAll('.card').forEach(c=>c.style.display=(l==='all'||c.dataset.l===l)?'block':'none');
+}
+function pay(amt){
+  const url = `upi://pay?pa=jayanthedara1@ybl&pn=Mahabharata%20Epic&am=${amt}&cu=INR&tn=Support%20Adhyaya`;
+  window.location.href = url;
 }
 </script>
 </body>
