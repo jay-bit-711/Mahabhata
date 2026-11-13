@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Noto Sans", "Noto Sans Telugu", system-ui, sans-serif;
+  --font-display: "Instrument Serif", "Noto Serif Devanagari", serif;
+  --font-verse: "Noto Serif Devanagari", "Noto Sans Telugu", serif;
+  --color-ink: #0a0908;
+  --color-panel: #141210;
+  --color-line: #2c261e;
+  --color-cream: #f3ead7;
+  --color-mute: #8d8376;
+  --color-gold: #d4b06a;
+  --color-blood: #a33b32;
+  --color-on-gold: #0a0908;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html,
+  body {
+    background: var(--color-ink);
+    color: var(--color-cream);
+  }
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(110vh) scale(0.4);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(-8vh) scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes beam {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) rotate(-18deg) scaleY(0.2);
+  }
+  40% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) rotate(-18deg) scaleY(1);
+  }
+}
+
+@keyframes title-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.ember {
+  animation: rise 7s linear infinite;
+}
+
+.beam {
+  animation: beam 4.6s ease-out forwards;
+}
+
+.title-in {
+  animation: title-in 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.plate {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  background: var(--color-ink);
+}
+
+.plate img,
+.plate video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plate-page {
+  aspect-ratio: 16 / 7;
+}
+
+.plate-tale {
+  aspect-ratio: 21 / 6;
+}
+
+.scene-in {
+  animation: title-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes shake-pane {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+}
+
+@keyframes ink-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.2;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.shake {
+  animation: shake-pane 0.38s linear;
+}
+
+.ink {
+  animation: ink-in 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.sakuga-pyre {
+  background: radial-gradient(circle at 50% 80%, color-mix(in oklab, var(--color-blood) 70%, transparent), transparent 62%);
+  animation: sakuga-pulse 1.4s ease-out both;
+}
+
+.sakuga-vastra {
+  box-shadow: inset 0 0 0 12px var(--color-blood);
+  background: color-mix(in oklab, var(--color-blood) 28%, transparent);
+  animation: sakuga-pulse 1.6s ease-out both;
+}
+
+.sakuga-virata {
+  color: var(--color-gold);
+  background: radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--color-gold) 28%, transparent), transparent 55%);
+  animation: sakuga-spin 8s linear both;
+}
+
+.sakuga-wheel {
+  background:
+    repeating-conic-gradient(from 0deg, transparent 0 8deg, color-mix(in oklab, var(--color-gold) 35%, transparent) 8deg 10deg),
+    radial-gradient(circle at 50% 70%, color-mix(in oklab, var(--color-cream) 20%, transparent), transparent 50%);
+  animation: sakuga-spin 2.4s linear both;
+}
+
+@keyframes sakuga-pulse {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes sakuga-spin {
+  from {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+  15% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: rotate(40deg);
+  }
+}
+
+.chain-snap {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ember,
+  .beam,
+  .title-in,
+  .shake,
+  .ink,
+  .sakuga {
+    animation: none;
+  }
+}
