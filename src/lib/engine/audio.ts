@@ -197,6 +197,45 @@ export function shatterHit() {
   osc.stop(now + 0.46);
 }
 
+export function heartbeat() {
+  const c = context();
+  const now = c.currentTime;
+  const thump = (at: number, freq: number) => {
+    const osc = c.createOscillator();
+    const gain = c.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq, at);
+    osc.frequency.exponentialRampToValueAtTime(36, at + 0.2);
+    gain.gain.setValueAtTime(0.0001, at);
+    gain.gain.linearRampToValueAtTime(0.14, at + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.001, at + 0.24);
+    osc.connect(gain);
+    gain.connect(c.destination);
+    osc.start(at);
+    osc.stop(at + 0.26);
+  };
+  thump(now, 78);
+  thump(now + 0.46, 52);
+}
+
+export function cosmosTone() {
+  const c = context();
+  const now = c.currentTime;
+  const gain = c.createGain();
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.linearRampToValueAtTime(0.03, now + 1.2);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 6);
+  gain.connect(c.destination);
+  for (const freq of [55, 82.5, 110]) {
+    const osc = c.createOscillator();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    osc.connect(gain);
+    osc.start();
+    osc.stop(now + 6.1);
+  }
+}
+
 export function silkStream() {
   const c = context();
   const now = c.currentTime;

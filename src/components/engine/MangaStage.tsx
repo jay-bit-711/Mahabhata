@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { beatHit, drip, sakugaSwell, shatterHit, silkStream, vowDrop } from "@/lib/engine/audio";
+import { beatHit, cosmosTone, drip, heartbeat, sakugaSwell, shatterHit, silkStream, vowDrop } from "@/lib/engine/audio";
 import { bindVows } from "@/lib/engine/store";
 import type { Beat, Emotion, Lang, Line, Scene, Voice } from "@/lib/engine/types";
 
@@ -49,6 +49,7 @@ export function MangaStage({
   const [pct, setPct] = useState(0);
   const [shake, setShake] = useState(false);
   const frame = useRef(0);
+  const heard = useRef<string | undefined>(undefined);
   const beats = scene.beats;
   const beat = beats[Math.min(shown, beats.length - 1)];
   const last = shown >= beats.length - 1;
@@ -61,6 +62,7 @@ export function MangaStage({
     setHold(false);
     setOpened(false);
     setPct(0);
+    heard.current = undefined;
     onReady(beats.length <= 1 && !blocked(beats[0], false));
     if (scene.vows?.length) bindVows(scene.vows);
   }, [scene.id]);
@@ -75,10 +77,13 @@ export function MangaStage({
   }, [last, gate, scene.id, scene.sakuga, audio]);
 
   useEffect(() => {
-    if (!audio || !rite) return;
+    if (!audio || !rite || heard.current === rite) return;
+    heard.current = rite;
     if (rite === "vow") vowDrop();
     if (rite === "shatter") shatterHit();
     if (rite === "silk") silkStream();
+    if (rite === "black") heartbeat();
+    if (rite === "cosmos") cosmosTone();
   }, [rite, shown, scene.id, audio]);
 
   function reveal() {
@@ -120,15 +125,22 @@ export function MangaStage({
     if (!opened) setPct(0);
   }
 
+  const drained = scene.air === "mist" && rite !== "amber";
+  const hidePlate = rite === "black" || rite === "cosmos" || scene.air === "void" || rite === "amber";
+
   return (
-    <div className={(shake ? "shake " : "") + (scene.air === "lac" ? "air-lac " : "") + (rite ? "rite-live rite-" + rite : "")}>
+    <div className={(shake ? "shake " : "") + (drained ? "air-mist " : "") + (rite ? "rite-live rite-" + rite : "")}>
       {scene.air === "lac" ? <Wax /> : null}
+      {drained ? <Mist /> : null}
+      {scene.air === "void" || rite === "black" ? <VoidSky /> : null}
       {rite === "vow" ? <VowSky progress={opened ? 1 : pct} /> : null}
       {rite === "shatter" ? <Shatter /> : null}
       {rite === "silk" ? <Silk /> : null}
       {rite === "hair" ? <Hair progress={opened ? 1 : pct} /> : null}
-      {scene.sakuga && last && !gate ? <Sakuga kind={scene.sakuga} /> : null}
-      {scene.video || scene.image ? (
+      {rite === "cosmos" ? <Cosmos /> : null}
+      {rite === "amber" ? <Amber /> : null}
+      {scene.sakuga && last && !gate && rite !== "cosmos" ? <Sakuga kind={scene.sakuga} /> : null}
+      {!hidePlate && (scene.video || scene.image) ? (
         <div className="plate mb-4">
           {scene.video ? (
             <video autoPlay muted loop playsInline poster={scene.image} src={scene.video} />
@@ -137,6 +149,7 @@ export function MangaStage({
           )}
         </div>
       ) : null}
+      <div className="relative z-30">
       <div className="mb-3 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className={"flex size-10 items-center justify-center rounded-full border font-display text-gold " + MOOD[beat?.emotion ?? scene.emotion ?? "still"]}>
@@ -165,6 +178,7 @@ export function MangaStage({
             fresh={index === shown}
             peek={lens || (hold && index === shown) || (opened && index === shown && item.rite === "seal")}
             jagged={item.rite === "shatter" || item.rite === "hair"}
+            ash={item.rite === "ash"}
             progress={index === shown ? pct : 0}
             onHold={index === shown ? { down: beginHold, up: endHold } : undefined}
           />
@@ -172,13 +186,14 @@ export function MangaStage({
       </div>
       {gate ? (
         <p className="mt-4 text-xs tracking-widest text-gold uppercase">
-          {rite === "vow" ? "Hold. Let the name finish." : rite === "hair" ? "Hold. Lock the vow." : "Hold. The tunnel is not in this tongue."}
+          {rite === "vow" ? "Hold. Let the name finish." : rite === "hair" ? "Hold. Lock the vow." : rite === "cosmos" ? "Hold. Time is speaking." : rite === "amber" ? "Hold. Heaven can wait." : "Hold. The tunnel is not in this tongue."}
         </p>
       ) : !last ? (
         <button type="button" className="mt-4 min-h-11 border border-gold px-4 text-xs tracking-widest text-gold uppercase" onClick={reveal}>
           Next beat
         </button>
       ) : null}
+      </div>
     </div>
   );
 }
@@ -189,6 +204,7 @@ function BeatCard({
   fresh,
   peek,
   jagged,
+  ash,
   progress,
   onHold,
 }: {
@@ -197,6 +213,7 @@ function BeatCard({
   fresh: boolean;
   peek: boolean;
   jagged: boolean;
+  ash: boolean;
   progress: number;
   onHold?: { down: () => void; up: () => void };
 }) {
@@ -205,7 +222,7 @@ function BeatCard({
   return (
     <button
       type="button"
-      className={"ink relative block w-full overflow-hidden border border-line bg-panel px-4 py-4 text-left " + (fresh ? "" : "opacity-80")}
+      className={"ink relative block w-full overflow-hidden border border-line bg-panel px-4 py-4 text-left " + (fresh ? "" : "opacity-80") + (ash ? " ash" : "")}
       onPointerDown={() => onHold?.down()}
       onPointerUp={() => onHold?.up()}
       onPointerLeave={() => onHold?.up()}
@@ -242,6 +259,44 @@ function VowSky({ progress }: { progress: number }) {
       </svg>
     </div>
   );
+}
+
+function VoidSky() {
+  return <div className="rite rite-void" aria-hidden="true" />;
+}
+
+function Cosmos() {
+  return (
+    <div className="rite rite-cosmos" aria-hidden="true">
+      <svg viewBox="0 0 200 200" className="mandala">
+        <g className="mandala-spin">
+          {Array.from({ length: 14 }, (_, i) => (
+            <circle key={i} cx="100" cy="100" r={8 + i * 6.4} fill="none" stroke="currentColor" strokeWidth={i % 4 === 0 ? 0.7 : 0.28} />
+          ))}
+          {Array.from({ length: 12 }, (_, i) => {
+            const a = (i * Math.PI) / 6;
+            return <line key={i} x1="100" y1="100" x2={100 + 96 * Math.cos(a)} y2={100 + 96 * Math.sin(a)} stroke="currentColor" strokeWidth="0.25" />;
+          })}
+        </g>
+        <g className="mandala-spin mandala-back">
+          <polygon points="100,8 190,156 10,156" fill="none" stroke="currentColor" strokeWidth="0.55" />
+          <polygon points="100,192 14,46 186,46" fill="none" stroke="currentColor" strokeWidth="0.4" />
+          <circle cx="100" cy="28" r="4" fill="none" stroke="currentColor" />
+          <circle cx="164" cy="148" r="3" fill="none" stroke="currentColor" />
+          <circle cx="36" cy="148" r="3" fill="none" stroke="currentColor" />
+        </g>
+        <circle cx="100" cy="100" r="3.5" fill="currentColor" />
+      </svg>
+    </div>
+  );
+}
+
+function Mist() {
+  return <div className="rite rite-mist" aria-hidden="true" />;
+}
+
+function Amber() {
+  return <div className="rite rite-amber" aria-hidden="true" />;
 }
 
 function Wax() {

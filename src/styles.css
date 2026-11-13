@@ -366,6 +366,78 @@
   user-select: none;
 }
 
+.rite.rite-void {
+  background: #000;
+}
+
+.rite.rite-cosmos {
+  background: radial-gradient(circle at 50% 46%, #161008 0%, #000 58%);
+  color: var(--color-gold);
+}
+
+.mandala {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(140vw, 140vh);
+  height: min(140vw, 140vh);
+  transform: translate(-50%, -50%);
+}
+
+.mandala-spin {
+  transform-origin: 100px 100px;
+  animation: mandala-turn 90s linear infinite;
+}
+
+.mandala-back {
+  animation-direction: reverse;
+  animation-duration: 140s;
+}
+
+@keyframes mandala-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rite-live.rite-cosmos .ink p {
+  color: transparent;
+  background-image: linear-gradient(105deg, #8d7340, #fff6d8, #d4b06a, #fff, #c4a15a);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: leaf-shift 6s linear infinite;
+}
+
+@keyframes leaf-shift {
+  to {
+    background-position: 220% 0;
+  }
+}
+
+.air-mist {
+  filter: grayscale(1) contrast(0.92);
+}
+
+.rite.rite-mist {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.45), transparent 55%),
+    linear-gradient(to bottom, rgba(210, 214, 216, 0.28), rgba(120, 126, 130, 0.18));
+}
+
+.ash {
+  filter: grayscale(1);
+  opacity: 0.38;
+}
+
+.ash p {
+  color: #b7b7b7;
+}
+
+.rite.rite-amber {
+  background: radial-gradient(circle at 50% 72%, rgba(212, 140, 60, 0.55), rgba(90, 48, 16, 0.18) 42%, transparent 70%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ember,
   .beam,
@@ -379,7 +451,9 @@
   .rite-silk span,
   .rite.rite-hair,
   .rite.rite-wax,
-  .rite-wax span {
+  .rite-wax span,
+  .mandala-spin,
+  .rite-live.rite-cosmos .ink p {
     animation: none;
   }
 

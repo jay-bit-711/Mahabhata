@@ -1,4 +1,4 @@
-import type { Beat, Chapter, Emotion, Line, Voice } from "@/lib/engine/types";
+import type { Beat, Chapter, Emotion, Line, Rite, Voice } from "@/lib/engine/types";
 
 function line(sa: string, en: string, te: string): Line {
   return { sa, en, te };
@@ -9,7 +9,7 @@ function beat(
   sa: string,
   en: string,
   te: string,
-  extra?: { speaker?: string; emotion?: Emotion; shake?: boolean; intent?: Line },
+  extra?: { speaker?: string; emotion?: Emotion; shake?: boolean; intent?: Line; rite?: Rite; holdMs?: number },
 ): Beat {
   return { voice, line: line(sa, en, te), ...extra };
 }
@@ -77,11 +77,12 @@ export const bhishmaChapters: Chapter[] = [
         kala: 100,
         beats: [
           beat("whisper", "सेनाद्वयम्।", "The conches have finished showing off. What remains is a field of familiar faces: teacher, grandsire, the boys who ate from the same kitchen.", "శంఖాలు గొప్పచూపు చూపించడం అయిపోయింది. మిగిలింది తెలిసిన ముఖాల మైదానం. గురువు, తాత, ఒకే వంటగది నుంచి తిన్న పిల్లలు.", { speaker: "The field" }),
-          beat("speak", "गाण्डीवम् पतति।", "Arjuna's bow hits the chariot floor. The best archer alive has just discovered that accuracy is not the same thing as permission.", "అర్జునుడి విల్లు రథం నేలపై పడుతుంది. బతికి ఉన్న అతి తీక్షణమైన విలుకాడికి ఇప్పుడు అర్థమైంది. గురి తగలడం అనుమతి కాదు.", { speaker: "Arjuna" }),
-          beat("whisper", "न शक्नोमि।", "I will not kill them for a kingdom. What is a kingdom soaked in my teacher's blood. Let them have it. Let me be the coward who kept his love.", "రాజ్యం కోసం వారిని చంపను. గురువు రక్తంతో తడిసిన రాజ్యం ఏమిటి. వారికే ఇవ్వు. ప్రేమను ఉంచుకున్న పిరికివాడిని నన్ను అననివ్వు.", {
+          beat("speak", "गाण्डीवम् पतति।", "The bow hits the floor. Then there is no floor.", "విల్లు నేలపై పడుతుంది. తరువాత నేల లేదు.", { speaker: "Arjuna", rite: "black" }),
+          beat("whisper", "न शक्नोमि।", "I will not. Not for a kingdom. Not with his face in front of the arrow.", "నేను చేయను. రాజ్యం కోసం కాదు. బాణం ముందు అతని ముఖం ఉండగా కాదు.", {
             speaker: "Arjuna",
             emotion: "grief",
-            intent: line("भयम् न। शोकः। शोकः अपि पाशः।", "This is not fear. It is grief. Grief is also a chain, and it would like to be called mercy.", "ఇది భయం కాదు. శోకం. శోకం కూడా గొలుసు. దాన్ని దయ అనిపించుకోవాలని ఉంది."),
+            rite: "black",
+            intent: line("भयम् न। शोकः। शोकः अपि पाशः।", "This is not fear. It is grief, asking to be called mercy.", "ఇది భయం కాదు. శోకం. దయ అనిపించుకోవాలని అడుగుతున్న శోకం."),
           }),
         ],
       },
@@ -92,6 +93,7 @@ export const bhishmaChapters: Chapter[] = [
         place: "Between two armies",
         image: "/chronicle/beam.jpg",
         kala: 100,
+        air: "void",
         beats: [
           beat("whisper", "कालः तिष्ठति।", "Time does a rude thing. It stops. Horses hang between one breath and the next. The war is still there. It has been asked to wait.", "కాలం ఒక మొరటు పని చేస్తుంది. ఆగుతుంది. గుర్రాలు ఒక శ్వాసకు మరో శ్వాసకు మధ్య వేలాడుతాయి. యుద్ధం ఉంది. వేచి ఉండమని అడిగారు.", { speaker: "Time" }),
           beat("speak", "न त्वं कर्ता।", "Krishna does not comfort him. Comfort would send him home. You are grieving for people death has already addressed. You are late to a letter you did not write.", "కృష్ణుడు అతన్ని ఓదార్చడు. ఓదార్పు ఇంటికి పంపుతుంది. చావు ఇప్పటికే పిలిచిన వారి గురించి దుఃఖిస్తున్నావు. నువ్వు రాయని ఉత్తరానికి ఆలస్యంగా వచ్చావు.", { speaker: "Krishna" }),
@@ -111,9 +113,14 @@ export const bhishmaChapters: Chapter[] = [
         kala: 100,
         sakuga: "virata",
         beats: [
-          beat("boom", "पश्य।", "Then the friend is gone. What stands in the chariot has too many mouths, and every mouth is a century ending. Armies pour into the teeth like rivers that were always going there.", "తరువాత స్నేహితుడు పోతాడు. రథంలో నిలబడిన దానికి నోళ్ళు ఎక్కువ. ప్రతి నోరు అయిపోతున్న శతాబ్దం. సైన్యాలు పళ్ళలోకి నదుల్లా పోతున్నాయి. అవి ఎప్పుడూ అక్కడికే వెళ్తున్నాయి.", { speaker: "The form", shake: true }),
-          beat("whisper", "त्वम् अपि तत्र।", "Arjuna sees himself in that mouth. He sees Bhishma already fallen, Karna already in the mud, and the war not as a choice ahead of him but as a thing that has happened, happening, and still asking him to move his hands.", "అర్జునుడు ఆ నోట్లో తనను చూస్తాడు. ఇప్పటికే పడిన భీష్ముడు. ఇప్పటికే బురదలో కర్ణుడు. యుద్ధం ముందున్న ఎంపిక కాదు. అయిపోయినది, అవుతున్నది, ఇంకా చేతులు కదపమని అడుగుతున్నది.", { speaker: "Arjuna" }),
-          beat("boom", "उत्थिष्ठ।", "Therefore stand up. Do the work that is in front of the hand. Grief can ride in the chariot. It does not get to hold the reins.", "అందుకే లెమ్ము. చేతి ముందున్న పని చెయ్యి. శోకం రథంలో కూర్చోవచ్చు. పగ్గాలు పట్టదు.", { speaker: "Krishna", shake: true }),
+          beat("boom", "कालोऽस्मि।", "Time am I, world-destroyer, grown old, come to gather them in.", "నేను కాలాన్ని. లోకాలను మింగే వాడిని. ముదిరిన వాడిని. వారిని సేకరించడానికి వచ్చాను.", {
+            speaker: "Krishna",
+            shake: true,
+            rite: "cosmos",
+            holdMs: 2800,
+          }),
+          beat("whisper", "त्वम् अपि तत्र।", "You are already in the mouth. Bhishma has fallen. Karna is in the mud. The war is not ahead of you. It has happened.", "నువ్వు ఇప్పటికే నోట్లో ఉన్నావు. భీష్ముడు పడ్డాడు. కర్ణుడు బురదలో ఉన్నాడు. యుద్ధం నీ ముందు లేదు. అయిపోయింది.", { speaker: "The form", rite: "cosmos" }),
+          beat("boom", "उत्थिष्ठ।", "Stand. Grief may ride. It does not hold the reins.", "లెమ్ము. శోకం ఎక్కవచ్చు. పగ్గాలు పట్టదు.", { speaker: "Krishna", shake: true, rite: "cosmos" }),
         ],
         choices: [
           {

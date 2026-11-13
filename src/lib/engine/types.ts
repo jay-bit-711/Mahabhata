@@ -31,9 +31,9 @@ export type GameTrigger = {
   title: Line;
 };
 
-export type Rite = "vow" | "seal" | "shatter" | "silk" | "hair";
+export type Rite = "vow" | "seal" | "shatter" | "silk" | "hair" | "black" | "cosmos" | "ash" | "amber";
 
-export type Air = "lac";
+export type Air = "lac" | "void" | "mist";
 
 export type Beat = {
   speaker?: string;
