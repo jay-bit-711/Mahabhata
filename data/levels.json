@@ -1,0 +1,8 @@
+{
+  "totalLevels": 100,
+  "levels": [
+    { "id": 1, "title": "Naimisha", "parva": "Adi Parva", "status": "ready" },
+    { "id": 2, "title": "The Request", "parva": "Adi Parva", "status": "locked" },
+    { "id": 3, "title": "Coming", "parva": "Adi Parva", "status": "locked" }
+  ]
+}
