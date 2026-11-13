@@ -2,265 +2,196 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mahabharata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Noto+Sans:wght@400;500&family=Noto+Sans+Telugu:wght@400;500&family=Noto+Serif+Devanagari:wght@500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap');
-:root { --bg:#0a0908; --gold:#e4c07a; --cream:#f4efe6; --muted:#8a8175; --panel:#11100e; }
+:root { --ink:#0a0908; --panel:#141210; --line:#2c261e; --cream:#f3ead7; --mute:#8d8376; --gold:#d4b06a; --blood:#a33b32; }
 * { box-sizing:border-box; margin:0; padding:0; }
-html,body { height:100%; background:var(--bg); color:var(--cream); font-family:Inter,system-ui,sans-serif; overflow:hidden; }
-
-#intro { position:fixed; inset:0; z-index:100; background:#050403; display:flex; align-items:center; justify-content:center; flex-direction:column; transition:opacity 1.4s cubic-bezier(.2,.8,.2,1),visibility 1.4s; }
-#intro.hide { opacity:0; visibility:hidden; pointer-events:none; }
-.embers { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
-.ember { position:absolute; width:1.5px; height:1.5px; background:#ff8a4a; border-radius:50%; animation:rise 6s linear infinite; opacity:0; }
-@keyframes rise { 0%{transform:translateY(110vh) scale(0.4);opacity:0} 10%{opacity:0.8} 100%{transform:translateY(-10vh) scale(1.6);opacity:0} }
-.beam { position:absolute; width:2px; height:40vh; background:linear-gradient(to bottom,transparent,#e4c07a,transparent); left:50%; top:30%; transform:translateX(-50%) rotate(-15deg); opacity:0; animation:beam 4.8s 0.6s ease-out forwards; filter:blur(1px); }
-@keyframes beam { 0%{opacity:0;transform:translateX(-50%) rotate(-15deg) scaleY(0.3)} 40%{opacity:0.6} 100%{opacity:0;transform:translateX(-50%) rotate(-15deg) scaleY(1.2)} }
-.hero-title { font-family:"Instrument Serif",serif; font-size:clamp(4.2rem,13vw,8.5rem); font-weight:400; letter-spacing:-0.04em; line-height:0.88; color:var(--gold); text-align:center; animation:titleReveal 5.2s cubic-bezier(.15,.7,.2,1) forwards; text-shadow:0 0 40px rgba(228,192,122,0.25); }
-@keyframes titleReveal { 0%{opacity:0;transform:scale(0.88) translateY(30px);filter:blur(12px)} 35%{opacity:1;transform:scale(1) translateY(0);filter:blur(0)} 70%{opacity:1} 100%{opacity:0;transform:scale(1.06) translateY(-8px);filter:blur(2px)} }
-.hero-sub { margin-top:1.4rem; font-size:0.8rem; letter-spacing:0.45em; text-transform:uppercase; color:var(--muted); opacity:0; animation:fade 5.2s 1s forwards; }
-@keyframes fade { to{opacity:0.7} }
-
-.app { height:100%; display:flex; flex-direction:column; }
-.top { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background:rgba(10,9,8,0.85); backdrop-filter:blur(12px); border-bottom:1px solid rgba(228,192,122,0.12); z-index:10; }
-.logo { font-family:"Instrument Serif",serif; font-size:1.3rem; color:var(--gold); }
-.icon { background:none; border:none; color:var(--cream); font-size:1.35rem; cursor:pointer; opacity:0.8; }
-.lang-corner { display:flex; gap:6px; }
-.lang-letter { width:28px; height:28px; border-radius:50%; border:1px solid rgba(228,192,122,0.3); display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:500; cursor:pointer; transition:all .2s; }
-.lang-letter.on { background:var(--gold); color:#0a0908; border-color:var(--gold); }
-
-.main { flex:1; overflow-y:auto; padding:24px 20px 110px; }
-.hierarchy { display:flex; align-items:center; gap:10px; font-size:0.72rem; color:var(--muted); letter-spacing:0.06em; margin-bottom:8px; }
-.hierarchy span { color:var(--gold); }
-.hierarchy .sep { opacity:0.4; }
-.xp-bar { height:3px; background:#222; border-radius:2px; margin-bottom:20px; overflow:hidden; }
-.xp-fill { height:100%; background:var(--gold); width:0%; transition:width .4s; }
-.xp-meta { display:flex; justify-content:space-between; font-size:0.68rem; color:var(--muted); margin-bottom:6px; }
-
-.mode-icons { display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap; }
-.mode-icon { width:42px; height:42px; border-radius:12px; border:1px solid rgba(228,192,122,0.2); background:#161412; display:flex; align-items:center; justify-content:center; font-size:1.2rem; cursor:pointer; transition:all .2s; }
-.mode-icon.on { background:var(--gold); color:#0a0908; border-color:var(--gold); }
-
-.episode h2 { font-family:"Instrument Serif",serif; font-size:2rem; font-weight:400; margin-bottom:4px; }
-.episode .loc { color:var(--muted); font-size:0.82rem; margin-bottom:20px; }
-.block { margin-bottom:32px; opacity:0; transform:translateY(20px); transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1); }
-.block.visible { opacity:1; transform:translateY(0); }
-.visual { width:100%; aspect-ratio:16/9; background:#161412; border-radius:12px; margin-bottom:14px; display:flex; align-items:center; justify-content:center; color:#555; font-size:0.75rem; text-align:center; padding:16px; border:1px solid #222; }
-.sa { font-family:"Noto Serif Devanagari",serif; font-size:1.2rem; line-height:1.7; }
-.en,.te { margin-top:12px; line-height:1.6; color:#ddd; }
-.complete-btn { margin-top:16px; background:var(--gold); color:#0a0908; border:none; padding:10px 20px; border-radius:999px; font-size:0.8rem; cursor:pointer; }
-
-.overlay { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:200; opacity:0; pointer-events:none; transition:opacity .35s; }
-.overlay.on { opacity:1; pointer-events:auto; }
-.panel { position:fixed; top:0; bottom:0; width:min(360px,86vw); background:var(--panel); z-index:210; padding:28px 20px; overflow-y:auto; transition:transform .45s cubic-bezier(.2,.8,.2,1); border:1px solid rgba(228,192,122,0.1); }
-.panel.left { left:0; transform:translateX(-100%); }
-.panel.right { right:0; transform:translateX(100%); }
-.panel.on { transform:translateX(0); }
-.panel h3 { font-family:"Instrument Serif",serif; font-size:1.6rem; color:var(--gold); margin-bottom:20px; }
-.panel button { display:block; width:100%; text-align:left; background:none; border:none; color:var(--cream); padding:14px 0; border-bottom:1px solid #222; font-size:0.95rem; cursor:pointer; }
-.panel button:hover { color:var(--gold); }
-.deep { margin-top:40px; font-size:0.72rem; color:#555; line-height:1.5; }
-.map-box { background:#161412; border:1px solid #222; border-radius:12px; padding:20px; margin-top:12px; font-size:0.85rem; color:var(--muted); text-align:center; }
-
-.hud { position:fixed; bottom:0; left:0; right:0; display:flex; justify-content:space-around; align-items:center; background:rgba(10,9,8,0.92); backdrop-filter:blur(16px); border-top:1px solid rgba(228,192,122,0.15); padding:10px 0 14px; z-index:20; }
-.hud-item { background:none; border:none; color:var(--muted); display:flex; flex-direction:column; align-items:center; gap:4px; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; min-width:64px; }
-.hud-item .ico { font-size:1.3rem; }
-.hud-item.on { color:var(--gold); }
+html,body { background:var(--ink); color:var(--cream); font-family:"Noto Sans","Noto Sans Telugu",system-ui,sans-serif; }
+button { cursor:pointer; font:inherit; color:inherit; background:none; border:0; }
+header { position:sticky; top:0; z-index:20; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--line); background:rgba(10,9,8,.95); }
+.logo { font-family:"Instrument Serif",serif; font-size:1.35rem; color:var(--gold); }
+.langs { display:flex; gap:6px; }
+.langs button, .modes button { width:36px; height:36px; border:1px solid var(--line); border-radius:999px; }
+.langs button.on, .modes button.on { background:var(--gold); color:var(--ink); border-color:var(--gold); }
+main { max-width:36rem; margin:0 auto; padding:20px 16px 120px; }
+.meta { display:flex; justify-content:space-between; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mute); }
+.bar-labels { display:flex; justify-content:space-between; font-size:.72rem; color:var(--mute); margin:8px 0 4px; }
+.bar-labels .mid { color:var(--gold); }
+.track { position:relative; height:4px; background:var(--line); }
+.tick { position:absolute; left:50%; top:-3px; width:1px; height:10px; background:var(--mute); }
+.pip { position:absolute; top:-3px; width:8px; height:8px; border-radius:50%; background:var(--gold); transform:translateX(-50%); }
+.fill { height:4px; background:var(--gold); }
+.modes { display:flex; gap:8px; margin:16px 0; }
+.modes button { border-radius:0; width:44px; height:44px; background:var(--panel); }
+.plate { position:relative; min-height:11rem; margin-bottom:14px; border:1px solid var(--line); overflow:hidden; display:flex; align-items:flex-end;
+  background:radial-gradient(ellipse at 50% 120%, color-mix(in oklab, var(--blood) 65%, transparent), transparent 58%), radial-gradient(ellipse at 78% 0%, color-mix(in oklab, var(--gold) 28%, transparent), transparent 46%), var(--ink); }
+.plate b { position:absolute; top:10px; right:14px; font-family:"Instrument Serif",serif; font-weight:400; font-size:2.4rem; color:rgba(212,176,106,.22); }
+.plate p { padding:16px; font-size:.9rem; color:rgba(243,234,215,.82); }
+.beat { border-top:1px solid var(--line); padding-top:22px; margin-top:22px; }
+.place { color:var(--gold); letter-spacing:.14em; text-transform:uppercase; font-size:.72rem; margin-bottom:10px; }
+.sa { font-family:"Noto Serif Devanagari",serif; font-size:1.15rem; white-space:pre-line; line-height:1.7; }
+.en,.te,.note { margin-top:10px; font-size:.92rem; line-height:1.6; color:rgba(243,234,215,.9); }
+.note { color:var(--gold); }
+.act { margin-top:16px; min-height:44px; background:var(--gold); color:var(--ink); padding:10px 14px; }
+.choice { display:block; width:100%; text-align:left; margin-top:8px; min-height:44px; border:1px solid var(--line); padding:12px; }
+.choice:hover { border-color:var(--gold); }
+.choice small { display:block; margin-top:4px; color:var(--mute); }
+.done { margin-top:28px; border:1px solid rgba(212,176,106,.4); background:var(--panel); padding:18px; }
+.done h2 { font-family:"Instrument Serif",serif; font-size:1.8rem; color:var(--gold); font-weight:400; }
+nav { position:fixed; left:0; right:0; bottom:0; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); background:var(--ink); }
+nav button { min-height:56px; color:var(--mute); letter-spacing:.12em; text-transform:uppercase; font-size:.68rem; }
+nav button.on { color:var(--gold); }
+.sheet { position:fixed; inset:0; background:rgba(10,9,8,.72); z-index:30; display:flex; align-items:flex-end; justify-content:center; }
+.sheet .card { width:min(36rem,100%); max-height:80dvh; overflow:auto; background:var(--panel); border:1px solid var(--line); padding:20px; }
+.sheet h2 { font-family:"Instrument Serif",serif; font-size:2rem; color:var(--gold); font-weight:400; }
+.row { display:flex; justify-content:space-between; align-items:center; }
+.place-line { display:flex; gap:12px; }
+.dotcol { display:flex; flex-direction:column; align-items:center; }
+.dot { width:10px; height:10px; border-radius:50%; background:var(--line); }
+.dot.now { background:var(--gold); }
+.stem { width:1px; flex:1; background:var(--line); min-height:28px; }
+.actcard { border:1px solid var(--line); padding:12px; margin-top:10px; }
+#intro { min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; }
+#intro h1 { font-family:"Instrument Serif",serif; font-size:clamp(3.4rem,12vw,6rem); color:var(--gold); font-weight:400; line-height:.9; }
+#intro p { margin-top:14px; letter-spacing:.35em; text-transform:uppercase; font-size:.75rem; color:var(--mute); }
+#intro button { margin-top:36px; min-height:44px; border:1px solid var(--gold); color:var(--gold); letter-spacing:.18em; text-transform:uppercase; font-size:.75rem; padding:12px 22px; }
+.ember { position:absolute; width:2px; height:2px; border-radius:50%; background:var(--gold); animation:rise 7s linear infinite; }
+@keyframes rise { 0%{transform:translateY(100vh);opacity:0} 12%{opacity:.7} 100%{transform:translateY(-8vh);opacity:0} }
+.hidden { display:none !important; }
 </style>
 </head>
 <body>
-
 <div id="intro">
-  <div class="embers" id="embers"></div>
-  <div class="beam"></div>
-  <div class="hero-title">Mahabharata</div>
-  <div class="hero-sub">An Epic Retold</div>
+  <h1>Mahabharata</h1>
+  <p>A living chronicle</p>
+  <button id="enter" type="button">Enter Naimisha</button>
 </div>
-
-<div class="app">
-  <div class="top">
-    <button class="icon" onclick="openP('left')">☰</button>
+<div id="app" class="hidden">
+  <header>
     <div class="logo">Mahabharata</div>
-    <div class="lang-corner">
-      <div class="lang-letter on" data-l="sa">स</div>
-      <div class="lang-letter" data-l="en">E</div>
-      <div class="lang-letter" data-l="te">తె</div>
-      <div class="lang-letter" data-l="all">A</div>
+    <div class="langs" id="langs"></div>
+  </header>
+  <main>
+    <div class="meta"><span>Adi Parva</span><span id="beatmeta"></span></div>
+    <div class="bar-labels"><span>Adharma</span><span class="mid" id="stance">Balance</span><span>Dharma</span></div>
+    <div class="track"><span class="tick"></span><span class="pip" id="pip"></span></div>
+    <div class="bar-labels"><span id="xptext">0 / 100 XP</span><span>Level 1 of 100</span></div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="modes" id="modes"></div>
+    <div id="beats"></div>
+    <div id="cleared" class="done hidden">
+      <h2>Level 1 complete</h2>
+      <p class="en" id="clearnote"></p>
+      <button class="act" id="again" type="button" style="background:transparent;color:var(--mute);border:1px solid var(--line)">Hear it again</button>
     </div>
-  </div>
-
-  <div class="main" id="main">
-    <div class="hierarchy" id="hier"></div>
-    <div class="xp-meta"><span id="xp-text">0 / 100 XP</span><span id="level-text">Level 1</span></div>
-    <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
-
-    <div class="mode-icons" id="modes">
-      <div class="mode-icon on" data-m="anime" title="Anime">🎬</div>
-      <div class="mode-icon" data-m="manga" title="Manga">📖</div>
-      <div class="mode-icon" data-m="cartoon" title="Cartoon">🐼</div>
-      <div class="mode-icon" data-m="short" title="Short Story">✍️</div>
-      <div class="mode-icon" data-m="gif" title="GIF">🎬</div>
-      <div class="mode-icon" data-m="text" title="Text">Aa</div>
-    </div>
-
-    <div id="episode"></div>
-  </div>
-
-  <div class="hud">
-    <button class="hud-item on"><div class="ico">📖</div>Read</button>
-    <button class="hud-item" onclick="openMap()"><div class="ico">🗺️</div>Map</button>
-    <button class="hud-item" onclick="openPath()"><div class="ico">⏱️</div>Path</button>
-    <button class="hud-item" onclick="openP('right')"><div class="ico">⚙️</div>More</button>
-  </div>
+  </main>
+  <nav>
+    <button type="button" data-panel="read" class="on">Read</button>
+    <button type="button" data-panel="map">Map</button>
+    <button type="button" data-panel="path">Path</button>
+    <button type="button" data-panel="acts">Acts</button>
+  </nav>
 </div>
-
-<div class="overlay" id="ov" onclick="closeP()"></div>
-<div class="panel left" id="left">
-  <h3>Levels</h3>
-  <button onclick="loadLevel(1)">1 · Naimisha</button>
-  <button onclick="loadLevel(2)">2 · Locked</button>
-  <div class="deep">Finish Level 1 (100 XP) to unlock next.</div>
-</div>
-<div class="panel right" id="right">
-  <h3>Player</h3>
-  <button>Resume</button>
-  <button>Forums</button>
-  <button>Suggestions</button>
-  <div class="deep">Support<br>jayanthedara1@ybl<br>₹10 / ₹15</div>
-</div>
-<div class="panel right" id="map-panel" style="display:none">
-  <h3>Map</h3>
-  <div class="map-box" id="map-loc">Current location in the story</div>
-  <div class="deep">Story position in Bharat at this moment.</div>
-</div>
-<div class="panel right" id="path-panel" style="display:none">
-  <h3>Path</h3>
-  <div class="xp-meta"><span id="path-xp">0 / 100 XP</span><span>Level 1 / 100</span></div>
-  <div class="xp-bar"><div class="xp-fill" id="path-fill"></div></div>
-  <div class="deep">Zoom into sub-paths: Parva → Adhyaya → Block</div>
-</div>
-
+<div id="sheet" class="sheet hidden"></div>
 <script>
-const embers = document.getElementById('embers');
-for (let i = 0; i < 60; i++) {
-  const e = document.createElement('div');
-  e.className = 'ember';
-  e.style.left = Math.random()*100+'%';
-  e.style.animationDelay = Math.random()*5+'s';
-  e.style.animationDuration = (4+Math.random()*4)+'s';
-  embers.appendChild(e);
+const KEY = "mb-chronicle-v1";
+const BEATS = [
+  { id:"mangala", place:"Naimisha", visual:"A thin gold beam cuts a dark forest. Fire is still far off.", xp:25,
+    text:{ sa:"नारायणं नमस्कृत्य नरं चैव नरोत्तमम्।\nदेवीं सरस्वतीं चैव ततो जयमुदीरयेत्॥", en:"Bow first to Narayana, to Nara the best of men, and to Sarasvati. Only then speak the name Jaya.", te:"నారాయణునికి, నరోత్తముడైన నరునికి, సరస్వతికి నమస్కరించి తరువాతనే జయమును పలకాలి." } },
+  { id:"satra", place:"Naimisha", visual:"Sages sit in a wide ring. The sacrifice has already lasted years.", xp:0,
+    text:{ sa:"नैमिषे सुनियताः सनकादयः।", en:"In Naimisha, Kulapati Shaunaka’s twelve-year sacrifice holds the sages still. They are not waiting for entertainment. They are waiting for a true account.", te:"నైమిషంలో శౌనకుని పన్నెండేళ్ళ సత్రం నడుస్తోంది. మహర్షులు కథ కోసం కాదు, నిజమైన వృత్తాంతం కోసం కూర్చున్నారు." },
+    choice:{ prompt:{ sa:"कथं प्रविशेत् सौतिः?", en:"How does Sauti enter?", te:"సౌతి ఎలా ప్రవేశిస్తాడు?" }, options:[
+      { id:"bow", dharma:18, xp:20, label:{ sa:"प्रणम्य तिष्ठ", en:"Bow, and wait to be asked", te:"నమస్కరించి, అడిగే వరకు ఆగు" }, note:{ sa:"विनयः धर्मः।", en:"Humility keeps the hearing clean.", te:"వినయం వినికిడిని నిక్కముగా ఉంచుతుంది." } },
+      { id:"rush", dharma:-18, xp:30, label:{ sa:"शीघ्रं वद", en:"Begin before they ask", te:"అడగకముందే మొదలుపెట్టు" }, note:{ sa:"शीघ्रता यशं ददाति, श्रद्धां न।", en:"Speed wins the room. It spends trust.", te:"వేగం సభను గెలుస్తుంది. నమ్మకాన్ని ఖర్చు చేస్తుంది." } }
+    ] } },
+  { id:"sauti", place:"Naimisha", visual:"Ugrasrava, son of Lomaharshana, dust still on his feet.", xp:25,
+    text:{ sa:"लौमहर्षणिपुत्र उग्रश्रवा।", en:"Ugrasrava, a Sauti trained in the Puranas, comes in on foot. He knows the shape of the Bharata. He has not yet decided how much of its shame he will carry into the circle.", te:"లోమహర్షణి పుత్రుడు ఉగ్రశ్రవస్సు కాలినడకన వస్తాడు. భారత రూపం అతనికి తెలుసు. అవమానాన్ని ఎంత వరకు చెప్పాలో ఇంకా నిర్ణయించలేదు." } },
+  { id:"ask", place:"Naimisha", visual:"One sage lifts a hand. The fire answers before anyone speaks.", xp:0,
+    text:{ sa:"कथय भारतम्।", en:"They welcome him, then ask for the history of the Bharatas — not the pleasant parts, the whole war of a family.", te:"వారు స్వాగతం పలికి భారత వంశపు చరిత్ర అడుగుతారు. ఇంపైన భాగాలు కాదు. ఒక కుటుంబపు యుద్ధం మొత్తం." },
+    choice:{ prompt:{ sa:"किं कथयिष्यसि?", en:"What will you tell them?", te:"నువ్వు వారికి ఏమి చెబుతావు?" }, options:[
+      { id:"truth", dharma:24, xp:30, label:{ sa:"सत्यं सर्वं", en:"The whole truth, including the fall", te:"పతనంతో సహా సత్యమంతా" }, note:{ sa:"धर्मः गुरुः।", en:"The chronicle stays heavy, and honest.", te:"చరిత్ర బరువుగా, నిజాయితీగా ఉంటుంది." } },
+      { id:"glory", dharma:-22, xp:20, label:{ sa:"यश एव", en:"Only the glory of the victors", te:"విజేతల కీర్తి మాత్రమే" }, note:{ sa:"यशः लघु, किं तु खण्डितम्।", en:"The tale is easier to love, and missing its spine.", te:"కథ ప్రేమించడం సులభం. వెన్నెముక లేదు." } }
+    ] } }
+];
+const PLACES = [["Naimisha","The twelve-year satra",true],["Varanavata","The lac house",false],["Indraprastha","The new court",false],["Hastinapura","The dice hall",false],["Matsya","The hidden year",false],["Kurukshetra","The field",false]];
+const ACTS = [["I","The Hearing","Naimisha","A narrator arrives. What he is willing to tell sets the weight of the whole epic.",true],["II","House of Lac","Exile","Intrigue, fire, and the first alliances.",false],["III","The Dice Hall","Hastinapura","A wager you cannot win cleanly.",false],["IV","Kurukshetra","The field","Day by day. The cost of each order.",false]];
+let save = { intro:true, dharma:0, xp:0, heard:[], picks:{}, lang:"all", mode:"film" };
+try { const r = localStorage.getItem(KEY); if (r) save = { ...save, ...JSON.parse(r), heard:(JSON.parse(r).heard||[]), picks:(JSON.parse(r).picks||{}) }; } catch(e) {}
+function persist(){ localStorage.setItem(KEY, JSON.stringify(save)); }
+function lines(t){ return save.lang==="sa"?[t.sa]:save.lang==="en"?[t.en]:save.lang==="te"?[t.te]:[t.sa,t.en,t.te]; }
+function stance(){ return save.dharma>16?"Dharma":save.dharma<-16?"Adharma":"Balance"; }
+function hear(beat, extra, dharma, pick){
+  if (save.heard.includes(beat.id)) return;
+  save.heard = [...save.heard, beat.id];
+  save.xp = Math.min(100, save.xp + beat.xp + extra);
+  save.dharma = Math.max(-100, Math.min(100, save.dharma + dharma));
+  if (pick) save.picks[beat.id] = pick;
+  persist(); render();
 }
-setTimeout(() => document.getElementById('intro').classList.add('hide'), 5200);
-
-let mode = 'anime', lang = 'all', level = 1, xp = 0, levelData = null;
-
-async function loadLevel(n) {
-  if (n > 1) return alert('Finish Level 1 first');
-  const res = await fetch(`data/level-${n}.json`);
-  levelData = await res.json();
-  level = n;
-  xp = 0;
-  closeP();
-  render();
+function render(){
+  document.getElementById("intro").classList.toggle("hidden", !save.intro);
+  document.getElementById("app").classList.toggle("hidden", save.intro);
+  if (save.intro) return;
+  const heardN = Math.min(save.heard.length+1, BEATS.length);
+  document.getElementById("beatmeta").textContent = "Beat "+heardN+"/4";
+  document.getElementById("stance").textContent = stance();
+  document.getElementById("pip").style.left = ((save.dharma+100)/2)+"%" ;
+  document.getElementById("xptext").textContent = save.xp+" / 100 XP";
+  document.getElementById("fill").style.width = save.xp+"%";
+  const langs = [["sa","स"],["en","E"],["te","తె"],["all","A"]];
+  document.getElementById("langs").innerHTML = langs.map(([id,l])=>`<button type="button" class="${save.lang===id?"on":""}" data-lang="${id}">${l}</button>`).join("");
+  const modes = [["film","Film"],["page","Page"],["tale","Tale"],["text","Text"]];
+  document.getElementById("modes").innerHTML = modes.map(([id,l])=>`<button type="button" class="${save.mode===id?"on":""}" data-mode="${id}" title="${l}">${l[0]}</button>`).join("");
+  document.getElementById("beats").innerHTML = BEATS.map(b=>{
+    const heard = save.heard.includes(b.id);
+    const pick = b.choice && b.choice.options.find(o=>o.id===save.picks[b.id]);
+    const texts = lines(b.text).map((c,i)=>`<p class="${i===0 && (save.lang==="sa"||save.lang==="all")?"sa":"en"}">${c.replaceAll("<","")}</p>`).join("");
+    let action = "";
+    if (!heard && !b.choice) action = `<button class="act" data-hear="${b.id}" type="button">Mark heard · +${b.xp} XP</button>`;
+    if (!heard && b.choice) {
+      const p = lines(b.choice.prompt)[0];
+      action = `<p class="en">${p}</p>` + b.choice.options.map(o=>`<button class="choice" data-choice="${b.id}:${o.id}" type="button">${lines(o.label)[0]}<small>${o.dharma>0?"+":""}${o.dharma} dharma · +${o.xp} XP</small></button>`).join("");
+    }
+    const note = heard && pick ? lines(pick.note).map(c=>`<p class="note">${c}</p>`).join("") : (heard && !pick ? `<p class="en">Heard</p>` : "");
+    const plate = save.mode==="text" ? "" : `<div class="plate" style="min-height:${save.mode==="film"?"11rem":save.mode==="page"?"7rem":"4.5rem"}"><b>${b.place}</b><p>${b.visual}</p></div>`;
+    return `<article class="beat">${plate}<p class="place">${b.place}</p>${texts}${note}${action}</article>`;
+  }).join("");
+  const done = BEATS.every(b=>save.heard.includes(b.id));
+  document.getElementById("cleared").classList.toggle("hidden", !done);
+  document.getElementById("clearnote").textContent = "The hearing is set. Your stance is "+stance().toLowerCase()+". The House of Lac is the next act — still sealed.";
 }
-
-function revealBlocks() {
-  const blocks = document.querySelectorAll('.block');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  blocks.forEach(b => observer.observe(b));
+document.getElementById("enter").onclick = ()=>{ save.intro=false; persist(); render(); };
+document.getElementById("again").onclick = ()=>{ save={ intro:true, dharma:0, xp:0, heard:[], picks:{}, lang:save.lang, mode:save.mode }; persist(); render(); };
+document.body.addEventListener("click", (e)=>{
+  const lang = e.target.closest("[data-lang]");
+  const mode = e.target.closest("[data-mode]");
+  const hearBtn = e.target.closest("[data-hear]");
+  const choice = e.target.closest("[data-choice]");
+  const panel = e.target.closest("[data-panel]");
+  if (lang){ save.lang=lang.dataset.lang; persist(); render(); }
+  if (mode){ save.mode=mode.dataset.mode; persist(); render(); }
+  if (hearBtn){ const b=BEATS.find(x=>x.id===hearBtn.dataset.hear); hear(b,0,0); }
+  if (choice){ const [bid,oid]=choice.dataset.choice.split(":"); const b=BEATS.find(x=>x.id===bid); const o=b.choice.options.find(x=>x.id===oid); hear(b,o.xp,o.dharma,o.id); }
+  if (panel) openPanel(panel.dataset.panel);
+});
+function openPanel(name){
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on", b.dataset.panel===name));
+  if (name==="read"){ document.getElementById("sheet").classList.add("hidden"); return; }
+  const done = BEATS.every(b=>save.heard.includes(b.id));
+  let body = "";
+  if (name==="map") body = PLACES.map((p,i)=>`<div class="place-line"><div class="dotcol"><span class="dot ${p[2]?"now":""}"></span>${i<PLACES.length-1?'<span class="stem"></span>':""}</div><div style="padding-bottom:16px"><div>${p[0]}</div><div class="en" style="margin:0;color:var(--mute)">${p[1]}</div>${p[2]?'<div class="place">You are here</div>':""}</div></div>`).join("");
+  if (name==="path") body = `<p class="en">Adi Parva · Adhyaya 1 · Beat ${Math.min(save.heard.length+1,4)}/4</p><p style="font-family:Instrument Serif,serif;font-size:3rem;margin-top:12px">${save.xp}<span style="font-size:1.2rem;color:var(--mute)"> / 100</span></p><p class="note">${stance()} · Level 1 of 100</p><div class="track" style="margin-top:12px"><div class="fill" style="width:${save.xp}%"></div></div>`;
+  if (name==="acts") body = ACTS.map(a=>`<div class="actcard"><p class="place">Act ${a[0]} · ${a[2]}</p><div style="font-family:Instrument Serif,serif;font-size:1.5rem">${a[1]}</div><p class="en">${a[3]}</p><p class="place">${a[4]?"Open":done?"Next — still being written":"Sealed"}</p></div>`).join("");
+  document.getElementById("sheet").className = "sheet";
+  document.getElementById("sheet").innerHTML = `<div class="card"><div class="row"><h2>${name==="map"?"Where you stand":name==="path"?"The path":"Acts"}</h2><button type="button" id="closesh" style="min-width:44px;min-height:44px">Close</button></div>${body}</div>`;
+  document.getElementById("closesh").onclick = ()=>{ document.getElementById("sheet").classList.add("hidden"); document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on", b.dataset.panel==="read")); };
+  document.getElementById("sheet").onclick = (ev)=>{ if (ev.target.id==="sheet") document.getElementById("closesh").click(); };
 }
-
-function updateXP() {
-  const req = levelData?.xpRequired || 100;
-  const pct = Math.min(100, (xp / req) * 100);
-  document.getElementById('xp-text').textContent = `${xp} / ${req} XP`;
-  document.getElementById('level-text').textContent = `Level ${level}`;
-  document.getElementById('xp-fill').style.width = pct + '%';
-  document.getElementById('path-xp').textContent = `${xp} / ${req} XP`;
-  document.getElementById('path-fill').style.width = pct + '%';
-  if (xp >= req) {
-    setTimeout(() => alert('Level 1 complete. Level 2 unlocks next.'), 300);
-  }
-}
-
-function render() {
-  if (!levelData) return;
-  const c = levelData;
-  document.getElementById('hier').innerHTML =
-    `<span>${c.parva}</span><span class="sep">·</span><span>Adhyaya ${c.adhyaya}</span><span class="sep">·</span><span>Block 1/${c.blocks.length}</span>`;
-  document.getElementById('map-loc').textContent = c.location || 'Unknown';
-
-  let h = `<div class="episode"><h2>${c.title}</h2><div class="loc">${c.parva}</div>`;
-  c.blocks.forEach(b => {
-    h += `<div class="block"><div class="visual">${b.visual}<br><small>prompt ready</small></div>`;
-    if (lang === 'all' || lang === 'sa') h += `<p class="sa">${b.sa}</p>`;
-    if (lang === 'all' || lang === 'en') h += `<p class="en">${b.en}</p>`;
-    if (lang === 'all' || lang === 'te') h += `<p class="te">${b.te}</p>`;
-    h += `<button class="complete-btn" onclick="gainXP(${b.xp})">Finish (+${b.xp} XP)</button></div>`;
-  });
-  h += '</div>';
-  document.getElementById('episode').innerHTML = h;
-  updateXP();
-  localStorage.setItem('mb', JSON.stringify({level, mode, lang, xp}));
-  setTimeout(revealBlocks, 40);
-}
-
-function gainXP(amount) {
-  xp += amount;
-  updateXP();
-  localStorage.setItem('mb', JSON.stringify({level, mode, lang, xp}));
-}
-
-function setM(m) {
-  mode = m;
-  document.querySelectorAll('.mode-icon').forEach(x => x.classList.toggle('on', x.dataset.m === m));
-  render();
-}
-function setL(l) {
-  lang = l;
-  document.querySelectorAll('.lang-letter').forEach(x => x.classList.toggle('on', x.dataset.l === l));
-  render();
-}
-function openP(s) {
-  document.getElementById('ov').classList.add('on');
-  document.getElementById(s).classList.add('on');
-  document.getElementById('map-panel').style.display = 'none';
-  document.getElementById('path-panel').style.display = 'none';
-}
-function openMap() {
-  document.getElementById('ov').classList.add('on');
-  document.getElementById('map-panel').style.display = 'block';
-  document.getElementById('map-panel').classList.add('on');
-}
-function openPath() {
-  document.getElementById('ov').classList.add('on');
-  document.getElementById('path-panel').style.display = 'block';
-  document.getElementById('path-panel').classList.add('on');
-}
-function closeP() {
-  document.getElementById('ov').classList.remove('on');
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
-  document.getElementById('map-panel').style.display = 'none';
-  document.getElementById('path-panel').style.display = 'none';
-}
-
-document.querySelectorAll('.mode-icon').forEach(c => c.onclick = () => setM(c.dataset.m));
-document.querySelectorAll('.lang-letter').forEach(c => c.onclick = () => setL(c.dataset.l));
-
-const s = localStorage.getItem('mb');
-if (s) {
-  const o = JSON.parse(s);
-  level = o.level || 1; mode = o.mode || 'anime'; lang = o.lang || 'all'; xp = o.xp || 0;
-}
-loadLevel(1);
+for (let i=0;i<18;i++){ const s=document.createElement("span"); s.className="ember"; s.style.left=(i*37%100)+"%"; s.style.animationDelay=(i%7)*0.5+"s"; document.getElementById("intro").appendChild(s); }
+render();
 </script>
 </body>
 </html>
