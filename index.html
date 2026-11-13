@@ -3,161 +3,195 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>Mahabharata · Anime Epic</title>
+<title>Mahabharata · Modes</title>
 <style>
-:root {
-  --bg:#0c0a08; --gold:#f0c14b; --fire:#ff5a1f; --cream:#f7f1e6;
-  --card:#fff; --accent:#c2410c;
-}
+:root { --bg:#0f0d0b; --gold:#e8c36a; --accent:#b45309; --card:#fff; --text:#1c1917; }
 * { box-sizing:border-box; margin:0; padding:0; }
-body { background:var(--bg); color:#eee; font-family:system-ui,-apple-system,sans-serif; }
-.screen { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; transition:opacity .6s; }
-.screen.hidden { opacity:0; pointer-events:none; }
+body { background:var(--bg); color:#eee; font-family:system-ui,-apple-system,sans-serif; height:100dvh; overflow:hidden; }
 
-#cinematic { background:#000; z-index:50; }
-.sky { position:absolute; inset:0; background:radial-gradient(circle at 50% 70%, #4a1c0a, #000 70%); }
-.chariot { position:absolute; bottom:18%; width:200px; height:70px; background:linear-gradient(90deg,#5a3a22,#8b5a2b); border-radius:10px 30px 6px 6px; box-shadow:0 0 40px rgba(255,90,30,.5); animation:drive 6s ease-in-out infinite alternate; }
-.chariot::before { content:""; position:absolute; top:-22px; left:25px; width:55px; height:35px; background:#3a2415; border-radius:6px; }
-@keyframes drive { from{left:5%} to{left:70%} }
-.arrow { position:absolute; width:70px; height:3px; background:linear-gradient(90deg,#fff,#ffcc00); animation:fly 2s linear infinite; }
-@keyframes fly { 0%{transform:translateX(-10vw) translateY(20vh) rotate(-20deg);opacity:0} 15%{opacity:1} 100%{transform:translateX(110vw) translateY(-30vh) rotate(-8deg);opacity:0} }
-.fire { position:absolute; width:10px; height:10px; background:var(--fire); border-radius:50%; box-shadow:0 0 25px var(--fire); animation:rise 4s ease-out infinite; }
-@keyframes rise { 0%{transform:translateY(40vh) scale(.4);opacity:0} 20%{opacity:1} 100%{transform:translateY(-15vh) scale(2.2);opacity:0} }
-.big { position:relative; z-index:2; font-size:clamp(3rem,10vw,8rem); font-weight:200; letter-spacing:.12em; color:var(--gold); text-shadow:0 0 50px rgba(240,193,75,.6); animation:pop 5.2s ease forwards; }
-@keyframes pop { 0%{opacity:0;transform:scale(.6)} 30%{opacity:1;transform:scale(1)} 75%{opacity:1} 100%{opacity:0;transform:scale(1.1)} }
-.sub { position:relative; z-index:2; letter-spacing:.35em; margin-top:.5rem; opacity:0; animation:fade 5s 1.1s forwards; }
-@keyframes fade { to{opacity:.8} }
+.app { height:100%; display:flex; flex-direction:column; }
+.top { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:#1a1612; border-bottom:1px solid #333; }
+.top h1 { font-size:1.1rem; color:var(--gold); font-weight:500; }
+.icon-btn { background:transparent; border:none; color:#ccc; font-size:1.3rem; cursor:pointer; padding:6px; }
 
-#intro { background:linear-gradient(180deg,#120e0a,#2a1a0e); z-index:40; text-align:center; padding:2rem; }
-#intro h1 { font-size:clamp(2.4rem,8vw,5rem); color:var(--gold); font-weight:300; }
-#intro p { max-width:460px; margin-top:1rem; font-size:1.15rem; line-height:1.5; color:var(--cream); }
-.prog { position:absolute; bottom:40px; width:150px; height:3px; background:#333; }
-.prog div { height:100%; width:0; background:var(--gold); animation:bar 5s linear forwards; }
-@keyframes bar { to{width:100%} }
+.main { flex:1; overflow-y:auto; padding:16px; background:#faf8f5; color:var(--text); }
+.progress-bar { height:4px; background:#eee; border-radius:2px; margin-bottom:16px; }
+.progress-fill { height:100%; background:var(--accent); width:8%; border-radius:2px; transition:width .3s; }
+.meta { display:flex; justify-content:space-between; font-size:.8rem; color:#666; margin-bottom:12px; }
 
-#content { position:relative; background:#faf7f2; color:#1a1612; z-index:30; overflow-y:auto; padding:20px 16px 120px; }
-#content.hidden { display:none; }
-.topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-.level { background:#c2410c; color:#fff; padding:6px 14px; border-radius:20px; font-size:.8rem; font-weight:600; }
-.hdr { text-align:center; margin:10px 0 24px; }
-.hdr h1 { color:var(--accent); font-size:1.65rem; }
-.meta { color:#777; font-size:.88rem; }
-.switch { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-bottom:20px; }
-.switch button { border:1px solid #ddd; background:#fff; padding:8px 16px; border-radius:20px; font-size:.8rem; cursor:pointer; }
-.switch button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
-.card { background:#fff; border-radius:16px; padding:16px; margin-bottom:16px; box-shadow:0 8px 30px rgba(0,0,0,.07); }
-.visual { width:100%; height:180px; background:#eee; border-radius:12px; margin-bottom:12px; display:flex; align-items:center; justify-content:center; color:#999; font-size:.85rem; overflow:hidden; }
-.visual video, .visual img { width:100%; height:100%; object-fit:cover; }
-.sa { font-family:"Noto Serif Devanagari",serif; font-size:1.2rem; line-height:1.7; }
+.mode-pills, .lang-pills { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
+.pill { background:#fff; border:1px solid #ddd; padding:6px 12px; border-radius:20px; font-size:.78rem; cursor:pointer; }
+.pill.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+.episode { background:#fff; border-radius:14px; padding:16px; margin-bottom:16px; box-shadow:0 4px 16px rgba(0,0,0,.06); }
+.episode h2 { font-size:1.05rem; color:var(--accent); margin-bottom:8px; }
+.visual-slot { width:100%; height:160px; background:#f0eee9; border-radius:10px; margin:10px 0; display:flex; align-items:center; justify-content:center; color:#999; font-size:.8rem; text-align:center; padding:10px; }
+.sa { font-family:"Noto Serif Devanagari",serif; font-size:1.15rem; line-height:1.65; }
 .te { font-family:"Noto Sans Telugu",sans-serif; }
-.support { background:#1a120c; color:#f7f1e6; border-radius:16px; padding:20px; margin-top:28px; text-align:center; }
-.support h3 { color:var(--gold); margin-bottom:8px; }
-.upi { background:#fff; color:#1a120c; padding:10px 16px; border-radius:12px; font-weight:600; margin:10px 0; display:inline-block; }
-.amounts { display:flex; gap:8px; justify-content:center; margin:12px 0; }
-.amounts button { background:var(--gold); color:#1a120c; border:none; padding:10px 18px; border-radius:20px; font-weight:600; cursor:pointer; }
-.coming { font-size:.8rem; opacity:.6; margin-top:8px; }
-.skip { position:absolute; top:16px; right:16px; background:transparent; border:1px solid rgba(255,255,255,.4); color:#fff; padding:6px 12px; border-radius:20px; z-index:60; cursor:pointer; }
+
+/* Side panels */
+.overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:80; display:none; }
+.overlay.on { display:block; }
+.panel { position:fixed; top:0; bottom:0; width:min(320px,85vw); background:#fff; color:var(--text); z-index:90; transition:transform .3s; padding:20px 16px; overflow-y:auto; }
+.panel.left { left:0; transform:translateX(-100%); }
+.panel.right { right:0; transform:translateX(100%); }
+.panel.on { transform:translateX(0); }
+.panel h3 { color:var(--accent); margin-bottom:12px; }
+.panel button, .panel a { display:block; width:100%; text-align:left; background:none; border:none; padding:12px 0; border-bottom:1px solid #eee; font-size:.95rem; cursor:pointer; color:inherit; }
+.deep { margin-top:40px; font-size:.8rem; color:#999; }
+
+.bottom-nav { display:flex; background:#1a1612; border-top:1px solid #333; }
+.bottom-nav button { flex:1; background:none; border:none; color:#ccc; padding:12px; font-size:.75rem; cursor:pointer; }
+.bottom-nav button.on { color:var(--gold); }
 </style>
 </head>
 <body>
-<button class="skip" onclick="goContent()">Skip</button>
+<div class="app">
+  <div class="top">
+    <button class="icon-btn" onclick="openPanel('left')">☰</button>
+    <h1>Mahabharata</h1>
+    <button class="icon-btn" onclick="openPanel('right')">⋮</button>
+  </div>
 
-<div id="cinematic" class="screen">
-  <div class="sky"></div>
-  <div class="chariot"></div>
-  <div id="fx"></div>
-  <div class="big">KURUKSHETRA</div>
-  <div class="sub">ANIME EPIC · 18 DAYS</div>
+  <div class="main" id="main">
+    <div class="meta">
+      <span id="location">Adi Parva · Adhyaya 1</span>
+      <span id="progress-text">Progress 8%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+
+    <div class="mode-pills" id="modes">
+      <button class="pill on" data-mode="anime">Anime</button>
+      <button class="pill" data-mode="manga">Manga</button>
+      <button class="pill" data-mode="cartoon">Cartoon</button>
+      <button class="pill" data-mode="short">Short Story</button>
+      <button class="pill" data-mode="gif">GIF Only</button>
+      <button class="pill" data-mode="text">Text Only</button>
+    </div>
+
+    <div class="lang-pills" id="langs">
+      <button class="pill on" data-lang="all">All</button>
+      <button class="pill" data-lang="sa">Sanskrit</button>
+      <button class="pill" data-lang="en">English</button>
+      <button class="pill" data-lang="te">Telugu</button>
+    </div>
+
+    <div id="content"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="on">Read</button>
+    <button onclick="alert('Parva Map — Coming')">Map</button>
+    <button onclick="alert('Progress saved')">Progress</button>
+    <button onclick="openPanel('right')">More</button>
+  </div>
 </div>
 
-<div id="intro" class="screen hidden">
-  <h1>Mahabharata</h1>
-  <p>The story everyone knows — now in anime form.<br>Scroll, switch languages, level up through the Parvas.</p>
-  <div class="prog"><div></div></div>
+<div class="overlay" id="overlay" onclick="closePanels()"></div>
+
+<div class="panel left" id="left">
+  <h3>Chapters</h3>
+  <button onclick="loadChapter(1)">Adhyaya 1 — Naimisha</button>
+  <button onclick="loadChapter(2)">Adhyaya 2 — Coming</button>
+  <button onclick="loadChapter(3)">Adhyaya 3 — Coming</button>
+  <div class="deep">More Parvas unlock as you progress</div>
 </div>
 
-<div id="content" class="screen hidden" style="align-items:stretch; justify-content:flex-start;">
-  <div class="topbar">
-    <div class="level">Level 1 · Adi Parva</div>
-    <div style="font-size:.8rem; color:#666">0 / 18 Parvas</div>
-  </div>
-
-  <div class="hdr">
-    <h1>Adhyaya 1</h1>
-    <div class="meta">Anukramanika — The Sauti arrives</div>
-  </div>
-
-  <div class="switch">
-    <button class="on" onclick="setL('all')">All</button>
-    <button onclick="setL('sa')">Sanskrit</button>
-    <button onclick="setL('en')">English</button>
-    <button onclick="setL('te')">Telugu</button>
-  </div>
-
-  <div class="card" data-l="sa">
-    <div class="visual">[Image · Sauti approaching the sages]</div>
-    <h3 style="color:var(--accent); font-size:.75rem; letter-spacing:.05em; margin-bottom:8px">SANSKRIT</h3>
-    <p class="sa">नारायणं नमस्कृत्य नरं चैव नरोत्तमम्।<br>देवीं सरस्वतीं चैव ततो जयमुदीरयेत् ॥</p>
-  </div>
-
-  <div class="card" data-l="en">
-    <div class="visual">[GIF · Bowing to Narayana]</div>
-    <h3 style="color:var(--accent); font-size:.75rem; letter-spacing:.05em; margin-bottom:8px">ENGLISH</h3>
-    <p>Having bowed to Narayana and Nara the foremost of men, and to Sarasvati, then let Jaya be uttered.</p>
-    <p style="margin-top:12px">Ugrasrava Sauti arrives at the Naimisha satra of Shaunaka and is asked to tell the great Bharata.</p>
-  </div>
-
-  <div class="card" data-l="te">
-    <div class="visual">
-      <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;background:#222">
-        <source src="" type="video/mp4">
-        [Video · autoplay placeholder]
-      </video>
-    </div>
-    <h3 style="color:var(--accent); font-size:.75rem; letter-spacing:.05em; margin-bottom:8px">TELUGU</h3>
-    <p class="te">నారాయణుని, నరోత్తమునైన నరుని, సరస్వతిని నమస్కరించి తరువాత जयను ఉదీరించవలి.</p>
-  </div>
-
-  <div class="support">
-    <h3>Support the Epic</h3>
-    <p style="font-size:.9rem; margin-bottom:8px">Help build the full anime Mahabharata</p>
-    <div class="upi">jayanthedara1@ybl</div>
-    <div class="amounts">
-      <button onclick="pay(10)">₹10</button>
-      <button onclick="pay(15)">₹15</button>
-    </div>
-    <div class="coming">Other modes (cards, international) — Coming Soon</div>
+<div class="panel right" id="right">
+  <h3>Modes & Settings</h3>
+  <button>Reading Style</button>
+  <button>Language Preference</button>
+  <button onclick="alert('Resume from last position')">Resume</button>
+  <button>Discussion Forums — Pro</button>
+  <button>Suggest to Creator</button>
+  <div class="deep">
+    Support the project<br>
+    UPI: jayanthedara1@ybl<br>
+    <small>₹10 / ₹15 · Other modes coming soon</small>
   </div>
 </div>
 
 <script>
-const fx = document.getElementById('fx');
-for(let i=0;i<22;i++){
-  const a=document.createElement('div'); a.className='arrow';
-  a.style.top=(10+Math.random()*60)+'%'; a.style.animationDelay=Math.random()*2+'s';
-  fx.appendChild(a);
+const chapters = {
+  1: {
+    title: "Adhyaya 1 · Anukramanika",
+    location: "Adi Parva · Adhyaya 1",
+    progress: 8,
+    blocks: [
+      { visual: "[Anime / Manga / Cartoon prompt: Sauti arriving at Naimisha forest satra, sages seated under trees]",
+        sa: "नारायणं नमस्कृत्य नरं चैव नरोत्तमम्।\nदेवीं सरस्वतीं चैव ततो जयमुदीरयेत् ॥",
+        en: "Having bowed to Narayana and Nara the foremost of men, and to the goddess Sarasvati, then let Jaya be uttered.",
+        te: "నారాయణుని, నరోత్తమునైన నరుని, సరస్వతిని నమస్కరించి తరువాత जयను ఉదీరించవలి." },
+      { visual: "[Prompt: Sages welcoming Ugrasrava, twelve-year satra atmosphere]",
+        sa: "",
+        en: "Ugrasrava, son of Lomaharshana, approached the great sages in the Naimisha forest and was requested to narrate the great Bharata.",
+        te: "నైమిషారణ్యంలో శ౗నక కులపతి సత్రంలో ఉగ్రశ్రవుడు వినయముగా వచ్చి మహాభారతను అడిగారు." }
+    ]
+  }
+};
+
+let currentMode = 'anime';
+let currentLang = 'all';
+let currentChapter = 1;
+
+function render() {
+  const ch = chapters[currentChapter];
+  document.getElementById('location').textContent = ch.location;
+  document.getElementById('progress-text').textContent = `Progress ${ch.progress}%`;
+  document.getElementById('pfill').style.width = ch.progress + '%';
+
+  let html = `<div class="episode"><h2>${ch.title}</h2>`;
+  ch.blocks.forEach(b => {
+    html += `<div class="visual-slot">${b.visual}<br><small>Mode: ${currentMode}</small></div>`;
+    if (currentLang === 'all' || currentLang === 'sa') html += `<p class="sa">${b.sa}</p>`;
+    if (currentLang === 'all' || currentLang === 'en') html += `<p style="margin-top:10px">${b.en}</p>`;
+    if (currentLang === 'all' || currentLang === 'te') html += `<p class="te" style="margin-top:10px">${b.te}</p>`;
+  });
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+
+  // save progress
+  localStorage.setItem('mb_progress', JSON.stringify({ chapter: currentChapter, mode: currentMode, lang: currentLang }));
 }
-for(let i=0;i<20;i++){
-  const f=document.createElement('div'); f.className='fire';
-  f.style.left=Math.random()*100+'%'; f.style.animationDelay=Math.random()*3+'s';
-  fx.appendChild(f);
+
+function setMode(m) {
+  currentMode = m;
+  document.querySelectorAll('#modes .pill').forEach(p => p.classList.toggle('on', p.dataset.mode === m));
+  render();
 }
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
+function setLang(l) {
+  currentLang = l;
+  document.querySelectorAll('#langs .pill').forEach(p => p.classList.toggle('on', p.dataset.lang === l));
+  render();
 }
-function goContent(){ document.querySelector('.skip').style.display='none'; show('content'); }
-setTimeout(()=>show('intro'),5000);
-setTimeout(goContent,10000);
-function setL(l){
-  document.querySelectorAll('.switch button').forEach(b=>b.classList.remove('on'));
-  event.target.classList.add('on');
-  document.querySelectorAll('.card').forEach(c=>c.style.display=(l==='all'||c.dataset.l===l)?'block':'none');
+function loadChapter(n) {
+  if (!chapters[n]) { alert('Coming soon'); return; }
+  currentChapter = n;
+  closePanels();
+  render();
 }
-function pay(amt){
-  const url = `upi://pay?pa=jayanthedara1@ybl&pn=Mahabharata%20Epic&am=${amt}&cu=INR&tn=Support%20Adhyaya`;
-  window.location.href = url;
+
+function openPanel(side) {
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById(side).classList.add('on');
 }
+function closePanels() {
+  document.getElementById('overlay').classList.remove('on');
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+}
+
+document.querySelectorAll('#modes .pill').forEach(p => p.onclick = () => setMode(p.dataset.mode));
+document.querySelectorAll('#langs .pill').forEach(p => p.onclick = () => setLang(p.dataset.lang));
+
+// resume
+const saved = localStorage.getItem('mb_progress');
+if (saved) {
+  const s = JSON.parse(saved);
+  currentChapter = s.chapter || 1;
+  currentMode = s.mode || 'anime';
+  currentLang = s.lang || 'all';
+}
+render();
 </script>
 </body>
 </html>
