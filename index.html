@@ -16,7 +16,6 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; background: var(--bg); color: var(--cream); font-family: Inter, system-ui, sans-serif; overflow: hidden; }
 
-/* INTRO */
 #intro {
   position: fixed; inset: 0; z-index: 100;
   background: #050403;
@@ -37,8 +36,7 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 .beam {
   position: absolute; width: 2px; height: 40vh; background: linear-gradient(to bottom, transparent, #e4c07a, transparent);
   left: 50%; top: 30%; transform: translateX(-50%) rotate(-15deg);
-  opacity: 0; animation: beam 4.8s 0.6s ease-out forwards;
-  filter: blur(1px);
+  opacity: 0; animation: beam 4.8s 0.6s ease-out forwards; filter: blur(1px);
 }
 @keyframes beam {
   0% { opacity: 0; transform: translateX(-50%) rotate(-15deg) scaleY(0.3); }
@@ -48,11 +46,8 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 .hero-title {
   font-family: "Instrument Serif", serif;
   font-size: clamp(4.2rem, 13vw, 8.5rem);
-  font-weight: 400;
-  letter-spacing: -0.04em;
-  line-height: 0.88;
-  color: var(--gold);
-  text-align: center;
+  font-weight: 400; letter-spacing: -0.04em; line-height: 0.88;
+  color: var(--gold); text-align: center;
   animation: titleReveal 5.2s cubic-bezier(.15,.7,.2,1) forwards;
   text-shadow: 0 0 40px rgba(228,192,122,0.25);
 }
@@ -63,136 +58,110 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
   100% { opacity: 0; transform: scale(1.06) translateY(-8px); filter: blur(2px); }
 }
 .hero-sub {
-  margin-top: 1.4rem;
-  font-size: 0.8rem;
-  letter-spacing: 0.45em;
-  text-transform: uppercase;
-  color: var(--muted);
-  opacity: 0;
+  margin-top: 1.4rem; font-size: 0.8rem; letter-spacing: 0.45em;
+  text-transform: uppercase; color: var(--muted); opacity: 0;
   animation: fade 5.2s 1s forwards;
 }
 @keyframes fade { to { opacity: 0.7; } }
 
-/* APP */
 .app { height: 100%; display: flex; flex-direction: column; }
 .top {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 18px 22px;
-  background: rgba(10,9,8,0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(228,192,122,0.12);
-  z-index: 10;
+  padding: 16px 20px;
+  background: rgba(10,9,8,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(228,192,122,0.12); z-index: 10;
 }
-.logo { font-family: "Instrument Serif", serif; font-size: 1.35rem; color: var(--gold); letter-spacing: -0.02em; }
-.icon { background: none; border: none; color: var(--cream); font-size: 1.4rem; cursor: pointer; opacity: 0.8; }
-.icon:hover { opacity: 1; }
+.logo { font-family: "Instrument Serif", serif; font-size: 1.3rem; color: var(--gold); }
+.icon { background: none; border: none; color: var(--cream); font-size: 1.35rem; cursor: pointer; opacity: 0.8; }
+.lang-corner {
+  display: flex; gap: 6px; align-items: center;
+}
+.lang-letter {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid rgba(228,192,122,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 500; cursor: pointer;
+  transition: all .2s;
+}
+.lang-letter.on { background: var(--gold); color: #0a0908; border-color: var(--gold); }
 
-.main {
-  flex: 1;
-  overflow-y: auto;
-  padding: 28px 22px 100px;
-  scroll-behavior: auto;
+.main { flex: 1; overflow-y: auto; padding: 24px 20px 110px; }
+.hierarchy {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em;
+  margin-bottom: 20px;
 }
-.progress-wrap { margin-bottom: 28px; }
-.progress-meta { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.05em; }
-.bar { height: 2px; background: #222; }
-.bar-fill { height: 100%; background: var(--gold); width: 8%; transition: width .4s; }
+.hierarchy span { color: var(--gold); }
+.hierarchy .sep { opacity: 0.4; }
 
-.selectors { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
-.row { display: flex; gap: 8px; flex-wrap: wrap; }
-.chip {
-  background: transparent;
-  border: 1px solid rgba(228,192,122,0.25);
-  color: var(--cream);
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: all .25s cubic-bezier(.2,.8,.2,1);
+.mode-icons {
+  display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
 }
-.chip.on, .chip:hover {
-  background: var(--gold);
-  color: #0a0908;
-  border-color: var(--gold);
+.mode-icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  border: 1px solid rgba(228,192,122,0.2);
+  background: #161412;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; cursor: pointer; transition: all .2s;
 }
+.mode-icon.on { background: var(--gold); color: #0a0908; border-color: var(--gold); }
 
 .episode h2 {
   font-family: "Instrument Serif", serif;
-  font-size: 2.2rem;
-  font-weight: 400;
-  color: var(--cream);
-  margin-bottom: 6px;
+  font-size: 2rem; font-weight: 400; margin-bottom: 4px;
 }
-.episode .loc { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.episode .loc { color: var(--muted); font-size: 0.82rem; margin-bottom: 20px; }
 .block {
-  margin-bottom: 36px;
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);
+  margin-bottom: 32px;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1);
 }
-.block.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.block.visible { opacity: 1; transform: translateY(0); }
 .visual {
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: #161412;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555;
-  font-size: 0.8rem;
-  text-align: center;
-  padding: 20px;
+  width: 100%; aspect-ratio: 16/9; background: #161412;
+  border-radius: 12px; margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: center;
+  color: #555; font-size: 0.75rem; text-align: center; padding: 16px;
   border: 1px solid #222;
 }
-.sa { font-family: "Noto Serif Devanagari", serif; font-size: 1.25rem; line-height: 1.7; color: var(--cream); }
-.en, .te { margin-top: 14px; line-height: 1.65; color: #ddd; }
+.sa { font-family: "Noto Serif Devanagari", serif; font-size: 1.2rem; line-height: 1.7; }
+.en, .te { margin-top: 12px; line-height: 1.6; color: #ddd; }
 
-/* Panels */
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; opacity: 0; pointer-events: none; transition: opacity .35s; }
 .overlay.on { opacity: 1; pointer-events: auto; }
 .panel {
-  position: fixed; top: 0; bottom: 0; width: min(380px, 88vw);
-  background: var(--panel);
-  z-index: 210;
-  padding: 32px 24px;
-  overflow-y: auto;
+  position: fixed; top: 0; bottom: 0; width: min(360px, 86vw);
+  background: var(--panel); z-index: 210; padding: 28px 20px; overflow-y: auto;
   transition: transform .45s cubic-bezier(.2,.8,.2,1);
   border: 1px solid rgba(228,192,122,0.1);
 }
 .panel.left { left: 0; transform: translateX(-100%); }
 .panel.right { right: 0; transform: translateX(100%); }
 .panel.on { transform: translateX(0); }
-.panel h3 { font-family: "Instrument Serif", serif; font-size: 1.8rem; color: var(--gold); margin-bottom: 24px; }
+.panel h3 { font-family: "Instrument Serif", serif; font-size: 1.6rem; color: var(--gold); margin-bottom: 20px; }
 .panel button {
-  display: block; width: 100%; text-align: left;
-  background: none; border: none; color: var(--cream);
-  padding: 16px 0;
-  border-bottom: 1px solid #222;
-  font-size: 1rem;
-  cursor: pointer;
+  display: block; width: 100%; text-align: left; background: none; border: none;
+  color: var(--cream); padding: 14px 0; border-bottom: 1px solid #222;
+  font-size: 0.95rem; cursor: pointer;
 }
 .panel button:hover { color: var(--gold); }
-.deep { margin-top: 48px; font-size: 0.75rem; color: #555; line-height: 1.5; }
+.deep { margin-top: 40px; font-size: 0.72rem; color: #555; line-height: 1.5; }
 
-.bottom {
-  display: flex;
-  background: rgba(10,9,8,0.9);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(228,192,122,0.12);
-  z-index: 10;
+.hud {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  display: flex; justify-content: space-around; align-items: center;
+  background: rgba(10,9,8,0.92); backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(228,192,122,0.15);
+  padding: 10px 0 14px; z-index: 20;
 }
-.bottom button {
-  flex: 1; background: none; border: none; color: var(--muted);
-  padding: 16px; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
-  cursor: pointer;
+.hud-item {
+  background: none; border: none; color: var(--muted);
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; min-width: 64px;
 }
-.bottom button.on { color: var(--gold); }
+.hud-item .ico { font-size: 1.3rem; }
+.hud-item.on { color: var(--gold); }
 </style>
 </head>
 <body>
@@ -208,58 +177,52 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
   <div class="top">
     <button class="icon" onclick="openP('left')">☰</button>
     <div class="logo">Mahabharata</div>
-    <button class="icon" onclick="openP('right')">⋮</button>
+    <div class="lang-corner">
+      <div class="lang-letter on" data-l="sa" title="Sanskrit">स</div>
+      <div class="lang-letter" data-l="en" title="English">E</div>
+      <div class="lang-letter" data-l="te" title="Telugu">తె</div>
+      <div class="lang-letter" data-l="all" title="All">A</div>
+    </div>
   </div>
 
   <div class="main" id="main">
-    <div class="progress-wrap">
-      <div class="progress-meta">
-        <span id="loc">Adi Parva · Adhyaya 1</span>
-        <span id="pct">8%</span>
-      </div>
-      <div class="bar"><div class="bar-fill" id="fill"></div></div>
+    <div class="hierarchy" id="hier">
+      <span>Adi Parva</span><span class="sep">·</span>
+      <span>Adhyaya 1</span><span class="sep">·</span>
+      <span>Block 1/4</span>
     </div>
 
-    <div class="selectors">
-      <div class="row" id="modes">
-        <button class="chip on" data-m="anime">Anime</button>
-        <button class="chip" data-m="manga">Manga</button>
-        <button class="chip" data-m="cartoon">Cartoon</button>
-        <button class="chip" data-m="short">Short Story</button>
-        <button class="chip" data-m="gif">GIF</button>
-        <button class="chip" data-m="text">Text</button>
-      </div>
-      <div class="row" id="langs">
-        <button class="chip on" data-l="all">All</button>
-        <button class="chip" data-l="sa">Sanskrit</button>
-        <button class="chip" data-l="en">English</button>
-        <button class="chip" data-l="te">Telugu</button>
-      </div>
+    <div class="mode-icons" id="modes">
+      <div class="mode-icon on" data-m="anime" title="Anime">🎬</div>
+      <div class="mode-icon" data-m="manga" title="Manga">📖</div>
+      <div class="mode-icon" data-m="cartoon" title="Cartoon">🐼</div>
+      <div class="mode-icon" data-m="short" title="Short Story">✍️</div>
+      <div class="mode-icon" data-m="gif" title="GIF">🎬</div>
+      <div class="mode-icon" data-m="text" title="Text">Aa</div>
     </div>
 
     <div id="episode"></div>
   </div>
 
-  <div class="bottom">
-    <button class="on">Read</button>
-    <button>Map</button>
-    <button>Progress</button>
-    <button onclick="openP('right')">More</button>
+  <div class="hud">
+    <button class="hud-item on"><div class="ico">📖</div>Read</button>
+    <button class="hud-item"><div class="ico">🗺️</div>Map</button>
+    <button class="hud-item"><div class="ico">⏱️</div>Path</button>
+    <button class="hud-item" onclick="openP('right')"><div class="ico">⚙️</div>More</button>
   </div>
 </div>
 
 <div class="overlay" id="ov" onclick="closeP()"></div>
 <div class="panel left" id="left">
-  <h3>Parvas</h3>
-  <button onclick="load(1)">Adhyaya 1 — Naimisha</button>
-  <button onclick="load(2)">Adhyaya 2</button>
-  <button onclick="load(3)">Adhyaya 3</button>
-  <div class="deep">More chapters unlock with progress.</div>
+  <h3>Adhyayas</h3>
+  <button onclick="load(1)">1 · Naimisha</button>
+  <button onclick="load(2)">2 · Coming</button>
+  <button onclick="load(3)">3 · Coming</button>
+  <div class="deep">Swipe or select to move between Adhyayas.</div>
 </div>
 <div class="panel right" id="right">
-  <h3>Experience</h3>
+  <h3>Player</h3>
   <button>Reading Mode</button>
-  <button>Language</button>
   <button>Resume</button>
   <button>Forums</button>
   <button>Suggestions</button>
@@ -267,9 +230,8 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 </div>
 
 <script>
-// Embers
 const embers = document.getElementById('embers');
-for (let i = 0; i < 80; i++) {
+for (let i = 0; i < 70; i++) {
   const e = document.createElement('div');
   e.className = 'ember';
   e.style.left = Math.random() * 100 + '%';
@@ -279,35 +241,35 @@ for (let i = 0; i < 80; i++) {
 }
 setTimeout(() => document.getElementById('intro').classList.add('hide'), 5200);
 
-// Inertial scroll
-const main = document.getElementById('main');
-let current = 0, target = 0, ease = 0.08;
-function lerp() {
-  target = main.scrollTop;
-  current += (target - current) * ease;
-  // soft override only on wheel; native still works
-  requestAnimationFrame(lerp);
-}
-requestAnimationFrame(lerp);
-
-// Data
 const data = {
   1: {
     title: "Adhyaya 1",
-    loc: "Adi Parva · Anukramanika",
-    pct: 8,
+    loc: "Anukramanika",
+    hier: ["Adi Parva", "Adhyaya 1", "Block"],
     blocks: [
       {
-        v: "Visual prompt — Sauti approaching the Naimisha satra under ancient trees, sages seated in quiet expectation",
+        v: "Visual — Sauti approaching the Naimisha satra",
         sa: "नारायणं नमस्कृत्य नरं चैव नरोत्तमम्।\nदेवीं सरस्वतीं चैव ततो जयमुदीरयेत् ॥",
-        en: "Having bowed to Narayana and to Nara the foremost of men, and to the goddess Sarasvati, then let Jaya be uttered.",
+        en: "Having bowed to Narayana and Nara the foremost of men, and to Sarasvati, then let Jaya be uttered.",
         te: "నారాయణుని, నరోత్తమునైన నరుని, సరస్వతిని నమస్కరించి తరువాత जयను ఉదీరించవలి."
       },
       {
-        v: "Visual prompt — The sages of Naimisha receiving the narrator with calm authority",
+        v: "Visual — Sages seated at the twelve-year satra",
         sa: "",
-        en: "Ugrasrava approached the sages at the twelve-year sacrifice of Shaunaka and was asked to narrate the history of the Bharatas.",
-        te: "నైమిషారణ్యంలో శ౗నక కులపతి సత్రంలో ఉగ్రశ్రవుడు వినయముగా వచ్చి మహాభారతను అడిగారు."
+        en: "In the Naimisha forest, at the twelve-year sacrifice of Kulapati Shaunaka, the sages sat at ease.",
+        te: "నైమిషారణ్యంలో శ౗నక కులపతి యొక్క ప్రారంభించిన ప్రతిజ్ఞాన సత్రంలో మహర్షులు కూర్చున్నారు."
+      },
+      {
+        v: "Visual — Ugrasrava Sauti arrives with humility",
+        sa: "",
+        en: "Ugrasrava, son of Lomaharshana, a Sauti skilled in the Puranas, approached them with humility.",
+        te: "లోమహర్షణ పుత్రుడైన ఉగ్రశ్రవుడు వినయముగా వారి సమీపించాడు."
+      },
+      {
+        v: "Visual — The request to narrate the great Bharata",
+        sa: "",
+        en: "The sages welcomed him and requested the narration of the great history of the Bharatas.",
+        te: "మహర్షులు ఆయనను స్వాగతించి మహాభారత కథను అడిగారు."
       }
     ]
   }
@@ -320,23 +282,22 @@ function revealBlocks() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 120);
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.2 });
+  }, { threshold: 0.15 });
   blocks.forEach(b => observer.observe(b));
 }
 
 function render() {
   const c = data[ch];
-  document.getElementById('loc').textContent = c.loc;
-  document.getElementById('pct').textContent = c.pct + '%';
-  document.getElementById('fill').style.width = c.pct + '%';
+  document.getElementById('hier').innerHTML =
+    `<span>${c.hier[0]}</span><span class="sep">·</span><span>${c.hier[1]}</span><span class="sep">·</span><span>Block 1/${c.blocks.length}</span>`;
 
   let h = `<div class="episode"><h2>${c.title}</h2><div class="loc">${c.loc}</div>`;
   c.blocks.forEach(b => {
-    h += `<div class="block"><div class="visual">${b.v}<br><small>${mode}</small></div>`;
+    h += `<div class="block"><div class="visual">${b.v}</div>`;
     if (lang === 'all' || lang === 'sa') h += `<p class="sa">${b.sa}</p>`;
     if (lang === 'all' || lang === 'en') h += `<p class="en">${b.en}</p>`;
     if (lang === 'all' || lang === 'te') h += `<p class="te">${b.te}</p>`;
@@ -345,17 +306,17 @@ function render() {
   h += '</div>';
   document.getElementById('episode').innerHTML = h;
   localStorage.setItem('mb', JSON.stringify({ch, mode, lang}));
-  setTimeout(revealBlocks, 50);
+  setTimeout(revealBlocks, 40);
 }
 
 function setM(m) {
   mode = m;
-  document.querySelectorAll('#modes .chip').forEach(x => x.classList.toggle('on', x.dataset.m === m));
+  document.querySelectorAll('.mode-icon').forEach(x => x.classList.toggle('on', x.dataset.m === m));
   render();
 }
 function setL(l) {
   lang = l;
-  document.querySelectorAll('#langs .chip').forEach(x => x.classList.toggle('on', x.dataset.l === l));
+  document.querySelectorAll('.lang-letter').forEach(x => x.classList.toggle('on', x.dataset.l === l));
   render();
 }
 function load(n) {
@@ -371,8 +332,8 @@ function closeP() {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
 }
 
-document.querySelectorAll('#modes .chip').forEach(c => c.onclick = () => setM(c.dataset.m));
-document.querySelectorAll('#langs .chip').forEach(c => c.onclick = () => setL(c.dataset.l));
+document.querySelectorAll('.mode-icon').forEach(c => c.onclick = () => setM(c.dataset.m));
+document.querySelectorAll('.lang-letter').forEach(c => c.onclick = () => setL(c.dataset.l));
 
 const s = localStorage.getItem('mb');
 if (s) {
