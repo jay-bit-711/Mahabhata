@@ -1,21 +1,26 @@
-# Mahabharata — Premium Digital Experience
+# Mahabharata
 
-## Structure (Users see only index.html)
-- `index.html` — User-facing app (Vercel)
-- `data/level-1.json` — Full Level 1 content (blocks, text, XP, visual prompts)
-- `data/levels.json` — 100-level overview
-- `data/characters.json` — Character roster + portrait prompts
-- `prompts/visuals.md` — Source of all visual prompts
-- `assets/` — (create locally) for images / GIFs / videos
+Premium cinematic retelling. Mobile-first, multi-mode, multi-language.
 
-## Workflow
-1. Edit content in `data/` and `prompts/`
-2. Users only interact with `index.html`
-3. Founder pulls, edits JSON/MD, commits, pushes
+## Files
+- `index.html` — live app (users only see this)
+- `data/level-1.json` — Level 1 content, XP, prompts
+- `data/levels.json` — 100-level map
+- `data/characters.json` — characters + portrait prompts
+- `prompts/visuals.md` — all visual prompts
+- `assets/` — images, GIFs, videos (add locally)
 
-## Level System
-- Entire story = 100 levels
-- Each block/shloka grants XP
-- Level 1 requires 100 XP (4 blocks)
-- Progress scales: Parva → Adhyaya → Block
-- Map shows current story location in Bharat
+## Founder workflow
+```bash
+git pull
+# edit data/*.json or prompts/visuals.md
+git add .
+git commit -m "update"
+git push
+```
+
+## Current state
+- Level 1 (Naimisha) is playable and completable (100 XP)
+- XP bar + hierarchical path (Parva · Adhyaya · Block)
+- Map panel shows story location
+- 100-level structure ready for expansion
