@@ -14,52 +14,64 @@
   --panel: #11100e;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; background: var(--bg); color: var(--cream); font-family: Inter, system-ui, sans-serif; }
+html, body { height: 100%; background: var(--bg); color: var(--cream); font-family: Inter, system-ui, sans-serif; overflow: hidden; }
 
 /* INTRO */
 #intro {
   position: fixed; inset: 0; z-index: 100;
-  background: radial-gradient(ellipse at 50% 60%, #2a160c 0%, #0a0908 70%);
+  background: #050403;
   display: flex; align-items: center; justify-content: center; flex-direction: column;
-  transition: opacity 1.2s ease, visibility 1.2s;
+  transition: opacity 1.4s cubic-bezier(.2,.8,.2,1), visibility 1.4s;
 }
 #intro.hide { opacity: 0; visibility: hidden; pointer-events: none; }
 .embers { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .ember {
-  position: absolute; width: 2px; height: 2px; background: #ff7a3c; border-radius: 50%;
-  animation: rise 5s linear infinite; opacity: 0;
+  position: absolute; width: 1.5px; height: 1.5px; background: #ff8a4a; border-radius: 50%;
+  animation: rise 6s linear infinite; opacity: 0;
 }
 @keyframes rise {
-  0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-  15% { opacity: 0.7; }
-  100% { transform: translateY(-20vh) scale(1.4); opacity: 0; }
+  0% { transform: translateY(110vh) scale(0.4); opacity: 0; }
+  10% { opacity: 0.8; }
+  100% { transform: translateY(-10vh) scale(1.6); opacity: 0; }
+}
+.beam {
+  position: absolute; width: 2px; height: 40vh; background: linear-gradient(to bottom, transparent, #e4c07a, transparent);
+  left: 50%; top: 30%; transform: translateX(-50%) rotate(-15deg);
+  opacity: 0; animation: beam 4.8s 0.6s ease-out forwards;
+  filter: blur(1px);
+}
+@keyframes beam {
+  0% { opacity: 0; transform: translateX(-50%) rotate(-15deg) scaleY(0.3); }
+  40% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateX(-50%) rotate(-15deg) scaleY(1.2); }
 }
 .hero-title {
   font-family: "Instrument Serif", serif;
-  font-size: clamp(4.5rem, 14vw, 9rem);
+  font-size: clamp(4.2rem, 13vw, 8.5rem);
   font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 0.9;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
   color: var(--gold);
   text-align: center;
-  animation: titleReveal 4.5s ease forwards;
+  animation: titleReveal 5.2s cubic-bezier(.15,.7,.2,1) forwards;
+  text-shadow: 0 0 40px rgba(228,192,122,0.25);
 }
 @keyframes titleReveal {
-  0% { opacity: 0; transform: scale(0.92) translateY(20px); filter: blur(8px); }
-  40% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-  75% { opacity: 1; }
-  100% { opacity: 0; transform: scale(1.04); }
+  0% { opacity: 0; transform: scale(0.88) translateY(30px); filter: blur(12px); }
+  35% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.06) translateY(-8px); filter: blur(2px); }
 }
 .hero-sub {
-  margin-top: 1.2rem;
-  font-size: 0.85rem;
-  letter-spacing: 0.4em;
+  margin-top: 1.4rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.45em;
   text-transform: uppercase;
   color: var(--muted);
   opacity: 0;
-  animation: fade 4.5s 0.8s forwards;
+  animation: fade 5.2s 1s forwards;
 }
-@keyframes fade { to { opacity: 1; } }
+@keyframes fade { to { opacity: 0.7; } }
 
 /* APP */
 .app { height: 100%; display: flex; flex-direction: column; }
@@ -69,12 +81,18 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
   background: rgba(10,9,8,0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(228,192,122,0.12);
+  z-index: 10;
 }
 .logo { font-family: "Instrument Serif", serif; font-size: 1.35rem; color: var(--gold); letter-spacing: -0.02em; }
 .icon { background: none; border: none; color: var(--cream); font-size: 1.4rem; cursor: pointer; opacity: 0.8; }
 .icon:hover { opacity: 1; }
 
-.main { flex: 1; overflow-y: auto; padding: 28px 22px 100px; }
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 22px 100px;
+  scroll-behavior: auto;
+}
 .progress-wrap { margin-bottom: 28px; }
 .progress-meta { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.05em; }
 .bar { height: 2px; background: #222; }
@@ -91,7 +109,7 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: all .2s;
+  transition: all .25s cubic-bezier(.2,.8,.2,1);
 }
 .chip.on, .chip:hover {
   background: var(--gold);
@@ -107,7 +125,16 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
   margin-bottom: 6px;
 }
 .episode .loc { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
-.block { margin-bottom: 36px; }
+.block {
+  margin-bottom: 36px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);
+}
+.block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 .visual {
   width: 100%;
   aspect-ratio: 16/9;
@@ -127,7 +154,7 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 .en, .te { margin-top: 14px; line-height: 1.65; color: #ddd; }
 
 /* Panels */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; opacity: 0; pointer-events: none; transition: opacity .3s; }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; opacity: 0; pointer-events: none; transition: opacity .35s; }
 .overlay.on { opacity: 1; pointer-events: auto; }
 .panel {
   position: fixed; top: 0; bottom: 0; width: min(380px, 88vw);
@@ -135,7 +162,7 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
   z-index: 210;
   padding: 32px 24px;
   overflow-y: auto;
-  transition: transform .4s cubic-bezier(.2,.8,.2,1);
+  transition: transform .45s cubic-bezier(.2,.8,.2,1);
   border: 1px solid rgba(228,192,122,0.1);
 }
 .panel.left { left: 0; transform: translateX(-100%); }
@@ -158,6 +185,7 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
   background: rgba(10,9,8,0.9);
   backdrop-filter: blur(12px);
   border-top: 1px solid rgba(228,192,122,0.12);
+  z-index: 10;
 }
 .bottom button {
   flex: 1; background: none; border: none; color: var(--muted);
@@ -171,6 +199,7 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 
 <div id="intro">
   <div class="embers" id="embers"></div>
+  <div class="beam"></div>
   <div class="hero-title">Mahabharata</div>
   <div class="hero-sub">An Epic Retold</div>
 </div>
@@ -182,7 +211,7 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
     <button class="icon" onclick="openP('right')">⋮</button>
   </div>
 
-  <div class="main">
+  <div class="main" id="main">
     <div class="progress-wrap">
       <div class="progress-meta">
         <span id="loc">Adi Parva · Adhyaya 1</span>
@@ -238,17 +267,30 @@ html, body { height: 100%; background: var(--bg); color: var(--cream); font-fami
 </div>
 
 <script>
+// Embers
 const embers = document.getElementById('embers');
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 80; i++) {
   const e = document.createElement('div');
   e.className = 'ember';
   e.style.left = Math.random() * 100 + '%';
-  e.style.animationDelay = Math.random() * 4 + 's';
-  e.style.animationDuration = (3 + Math.random() * 3) + 's';
+  e.style.animationDelay = Math.random() * 5 + 's';
+  e.style.animationDuration = (4 + Math.random() * 4) + 's';
   embers.appendChild(e);
 }
-setTimeout(() => document.getElementById('intro').classList.add('hide'), 4800);
+setTimeout(() => document.getElementById('intro').classList.add('hide'), 5200);
 
+// Inertial scroll
+const main = document.getElementById('main');
+let current = 0, target = 0, ease = 0.08;
+function lerp() {
+  target = main.scrollTop;
+  current += (target - current) * ease;
+  // soft override only on wheel; native still works
+  requestAnimationFrame(lerp);
+}
+requestAnimationFrame(lerp);
+
+// Data
 const data = {
   1: {
     title: "Adhyaya 1",
@@ -273,6 +315,19 @@ const data = {
 
 let mode = 'anime', lang = 'all', ch = 1;
 
+function revealBlocks() {
+  const blocks = document.querySelectorAll('.block');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 120);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  blocks.forEach(b => observer.observe(b));
+}
+
 function render() {
   const c = data[ch];
   document.getElementById('loc').textContent = c.loc;
@@ -290,6 +345,7 @@ function render() {
   h += '</div>';
   document.getElementById('episode').innerHTML = h;
   localStorage.setItem('mb', JSON.stringify({ch, mode, lang}));
+  setTimeout(revealBlocks, 50);
 }
 
 function setM(m) {
