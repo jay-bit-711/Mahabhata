@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mahabharata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Noto+Sans:wght@400;500&family=Noto+Sans+Telugu:wght@400;500&family=Noto+Serif+Devanagari:wght@500&display=swap" rel="stylesheet">
+<style>
+:root { --ink:#0a0908; --panel:#141210; --line:#2c261e; --cream:#f3ead7; --mute:#8d8376; --gold:#d4b06a; --blood:#a33b32; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { background:var(--ink); color:var(--cream); font-family:"Noto Sans","Noto Sans Telugu",system-ui,sans-serif; }
+button { cursor:pointer; font:inherit; color:inherit; background:none; border:0; }
+header { position:sticky; top:0; z-index:20; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--line); background:rgba(10,9,8,.95); }
+.logo { font-family:"Instrument Serif",serif; font-size:1.35rem; color:var(--gold); }
+.langs { display:flex; gap:6px; }
+.langs button, .modes button { width:36px; height:36px; border:1px solid var(--line); border-radius:999px; }
+.langs button.on, .modes button.on { background:var(--gold); color:var(--ink); border-color:var(--gold); }
+main { max-width:36rem; margin:0 auto; padding:20px 16px 120px; }
+.meta { display:flex; justify-content:space-between; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mute); }
+.bar-labels { display:flex; justify-content:space-between; font-size:.72rem; color:var(--mute); margin:8px 0 4px; }
+.bar-labels .mid { color:var(--gold); }
+.track { position:relative; height:4px; background:var(--line); }
+.tick { position:absolute; left:50%; top:-3px; width:1px; height:10px; background:var(--mute); }
+.pip { position:absolute; top:-3px; width:8px; height:8px; border-radius:50%; background:var(--gold); transform:translateX(-50%); }
+.fill { height:4px; background:var(--gold); }
+.modes { display:flex; gap:8px; margin:16px 0; }
+.modes button { border-radius:0; width:44px; height:44px; background:var(--panel); }
+.plate { position:relative; aspect-ratio:16/9; margin-bottom:14px; border:1px solid var(--line); overflow:hidden; background:var(--ink); }
+.plate img,.plate video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.beat { border-top:1px solid var(--line); padding-top:22px; margin-top:22px; }
+.place { color:var(--gold); letter-spacing:.14em; text-transform:uppercase; font-size:.72rem; margin-bottom:10px; }
+.sa { font-family:"Noto Serif Devanagari",serif; font-size:1.15rem; white-space:pre-line; line-height:1.7; }
+.en,.te,.note { margin-top:10px; font-size:.92rem; line-height:1.6; color:rgba(243,234,215,.9); }
+.note { color:var(--gold); }
+.act { margin-top:16px; min-height:44px; background:var(--gold); color:var(--ink); padding:10px 14px; }
+.choice { display:block; width:100%; text-align:left; margin-top:8px; min-height:44px; border:1px solid var(--line); padding:12px; }
+.choice:hover { border-color:var(--gold); }
+.choice small { display:block; margin-top:4px; color:var(--mute); }
+.done { margin-top:28px; border:1px solid rgba(212,176,106,.4); background:var(--panel); padding:18px; }
+.done h2 { font-family:"Instrument Serif",serif; font-size:1.8rem; color:var(--gold); font-weight:400; }
+nav { position:fixed; left:0; right:0; bottom:0; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); background:var(--ink); }
+nav button { min-height:56px; color:var(--mute); letter-spacing:.12em; text-transform:uppercase; font-size:.68rem; }
+nav button.on { color:var(--gold); }
+.sheet { position:fixed; inset:0; background:rgba(10,9,8,.72); z-index:30; display:flex; align-items:flex-end; justify-content:center; }
+.sheet .card { width:min(36rem,100%); max-height:80dvh; overflow:auto; background:var(--panel); border:1px solid var(--line); padding:20px; }
+.sheet h2 { font-family:"Instrument Serif",serif; font-size:2rem; color:var(--gold); font-weight:400; }
+.row { display:flex; justify-content:space-between; align-items:center; }
+.place-line { display:flex; gap:12px; }
+.dotcol { display:flex; flex-direction:column; align-items:center; }
+.dot { width:10px; height:10px; border-radius:50%; background:var(--line); }
+.dot.now { background:var(--gold); }
+.stem { width:1px; flex:1; background:var(--line); min-height:28px; }
+.actcard { border:1px solid var(--line); padding:12px; margin-top:10px; }
+#intro video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.75; }
+#intro h1, #intro p, #intro button { position:relative; z-index:1; }
+#intro h1 { font-family:"Instrument Serif",serif; font-size:clamp(3.4rem,12vw,6rem); color:var(--gold); font-weight:400; line-height:.9; }
+#intro p { margin-top:14px; letter-spacing:.35em; text-transform:uppercase; font-size:.75rem; color:var(--mute); }
+#intro button { margin-top:36px; min-height:44px; border:1px solid var(--gold); color:var(--gold); letter-spacing:.18em; text-transform:uppercase; font-size:.75rem; padding:12px 22px; }
+.ember { position:absolute; width:2px; height:2px; border-radius:50%; background:var(--gold); animation:rise 7s linear infinite; }
+@keyframes rise { 0%{transform:translateY(100vh);opacity:0} 12%{opacity:.7} 100%{transform:translateY(-8vh);opacity:0} }
+.hidden { display:none !important; }
+</style>
+</head>
+<body>
+<div id="intro">
+  <video id="introvid" autoplay muted loop playsinline poster="/chronicle/beam.jpg" src="/chronicle/beam.mp4"></video>
+  <h1>Mahabharata</h1>
+  <p>A living chronicle</p>
+  <button id="enter" type="button">Enter Naimisha</button>
+</div>
+<div id="app" class="hidden">
+  <header>
+    <div class="logo">Mahabharata</div>
+    <div class="langs" id="langs"></div>
+  </header>
+  <main>
+    <div class="meta"><span>Adi Parva</span><span id="beatmeta"></span></div>
+    <div class="bar-labels"><span>Adharma</span><span class="mid" id="stance">Balance</span><span>Dharma</span></div>
+    <div class="track"><span class="tick"></span><span class="pip" id="pip"></span></div>
+    <div class="bar-labels"><span id="xptext">0 / 100 XP</span><span>Level 1 of 100</span></div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="modes" id="modes"></div>
+    <div id="beats"></div>
+    <div id="cleared" class="done hidden">
+      <h2>Level 1 complete</h2>
+      <p class="en" id="clearnote"></p>
+      <button class="act" id="again" type="button" style="background:transparent;color:var(--mute);border:1px solid var(--line)">Hear it again</button>
+    </div>
+  </main>
+  <nav>
+    <button type="button" data-panel="read" class="on">Read</button>
+    <button type="button" data-panel="map">Map</button>
+    <button type="button" data-panel="path">Path</button>
+    <button type="button" data-panel="acts">Acts</button>
+  </nav>
+</div>
+<div id="sheet" class="sheet hidden"></div>
+<script>
+const KEY = "mb-chronicle-v1";
+const BEATS = [
+  { id:"mangala", place:"Naimisha", image:"/chronicle/beam.jpg", video:"/chronicle/beam.mp4", xp:25,
+    text:{ sa:"नारायणं नमस्कृत्य नरं चैव नरोत्तमम्।\nदेवीं सरस्वतीं चैव ततो जयमुदीरयेत्॥", en:"Bow first to Narayana, to Nara the best of men, and to Sarasvati. Only then speak the name Jaya.", te:"నారాయణునికి, నరోత్తముడైన నరునికి, సరస్వతికి నమస్కరించి తరువాతనే జయమును పలకాలి." } },
+  { id:"satra", place:"Naimisha", image:"/chronicle/satra.jpg", xp:0,
+    text:{ sa:"नैमिषे सुनियताः सनकादयः।", en:"In Naimisha, Kulapati Shaunaka’s twelve-year sacrifice holds the sages still. They are not waiting for entertainment. They are waiting for a true account.", te:"నైమిషంలో శౌనకుని పన్నెండేళ్ళ సత్రం నడుస్తోంది. మహర్షులు కథ కోసం కాదు, నిజమైన వృత్తాంతం కోసం కూర్చున్నారు." },
+    choice:{ prompt:{ sa:"कथं प्रविशेत् सौतिः?", en:"How does Sauti enter?", te:"సౌతి ఎలా ప్రవేశిస్తాడు?" }, options:[
+      { id:"bow", dharma:18, xp:20, label:{ sa:"प्रणम्य तिष्ठ", en:"Bow, and wait to be asked", te:"నమస్కరించి, అడిగే వరకు ఆగు" }, note:{ sa:"विनयः धर्मः।", en:"Humility keeps the hearing clean.", te:"వినయం వినికిడిని నిక్కముగా ఉంచుతుంది." } },
+      { id:"rush", dharma:-18, xp:30, label:{ sa:"शीघ्रं वद", en:"Begin before they ask", te:"అడగకముందే మొదలుపెట్టు" }, note:{ sa:"शीघ्रता यशं ददाति, श्रद्धां न।", en:"Speed wins the room. It spends trust.", te:"వేగం సభను గెలుస్తుంది. నమ్మకాన్ని ఖర్చు చేస్తుంది." } }
+    ] } },
+  { id:"sauti", place:"Naimisha", image:"/chronicle/sauti.jpg", xp:25,
+    text:{ sa:"लौमहर्षणिपुत्र उग्रश्रवा।", en:"Ugrasrava, a Sauti trained in the Puranas, comes in on foot. He knows the shape of the Bharata. He has not yet decided how much of its shame he will carry into the circle.", te:"లోమహర్షణి పుత్రుడు ఉగ్రశ్రవస్సు కాలినడకన వస్తాడు. భారత రూపం అతనికి తెలుసు. అవమానాన్ని ఎంత వరకు చెప్పాలో ఇంకా నిర్ణయించలేదు." } },
+  { id:"ask", place:"Naimisha", image:"/chronicle/fire.jpg", video:"/chronicle/fire.mp4", xp:0,
+    text:{ sa:"कथय भारतम्।", en:"They welcome him, then ask for the history of the Bharatas — not the pleasant parts, the whole war of a family.", te:"వారు స్వాగతం పలికి భారత వంశపు చరిత్ర అడుగుతారు. ఇంపైన భాగాలు కాదు. ఒక కుటుంబపు యుద్ధం మొత్తం." },
+    choice:{ prompt:{ sa:"किं कथयिष्यसि?", en:"What will you tell them?", te:"నువ్వు వారికి ఏమి చెబుతావు?" }, options:[
+      { id:"truth", dharma:24, xp:30, label:{ sa:"सत्यं सर्वं", en:"The whole truth, including the fall", te:"పతనంతో సహా సత్యమంతా" }, note:{ sa:"धर्मः गुरुः।", en:"The chronicle stays heavy, and honest.", te:"చరిత్ర బరువుగా, నిజాయితీగా ఉంటుంది." } },
+      { id:"glory", dharma:-22, xp:20, label:{ sa:"यश एव", en:"Only the glory of the victors", te:"విజేతల కీర్తి మాత్రమే" }, note:{ sa:"यशः लघु, किं तु खण्डितम्।", en:"The tale is easier to love, and missing its spine.", te:"కథ ప్రేమించడం సులభం. వెన్నెముక లేదు." } }
+    ] } }
+];
+const PLACES = [["Naimisha","The twelve-year satra",true],["Varanavata","The lac house",false],["Indraprastha","The new court",false],["Hastinapura","The dice hall",false],["Matsya","The hidden year",false],["Kurukshetra","The field",false]];
+const ACTS = [["I","The Hearing","Naimisha","A narrator arrives. What he is willing to tell sets the weight of the whole epic.",true],["II","House of Lac","Exile","Intrigue, fire, and the first alliances.",false],["III","The Dice Hall","Hastinapura","A wager you cannot win cleanly.",false],["IV","Kurukshetra","The field","Day by day. The cost of each order.",false]];
+let save = { intro:true, dharma:0, xp:0, heard:[], picks:{}, lang:"all", mode:"film" };
+try { const r = localStorage.getItem(KEY); if (r) save = { ...save, ...JSON.parse(r), heard:(JSON.parse(r).heard||[]), picks:(JSON.parse(r).picks||{}) }; } catch(e) {}
+function persist(){ localStorage.setItem(KEY, JSON.stringify(save)); }
+function lines(t){ return save.lang==="sa"?[t.sa]:save.lang==="en"?[t.en]:save.lang==="te"?[t.te]:[t.sa,t.en,t.te]; }
+function stance(){ return save.dharma>16?"Dharma":save.dharma<-16?"Adharma":"Balance"; }
+function hear(beat, extra, dharma, pick){
+  if (save.heard.includes(beat.id)) return;
+  save.heard = [...save.heard, beat.id];
+  save.xp = Math.min(100, save.xp + beat.xp + extra);
+  save.dharma = Math.max(-100, Math.min(100, save.dharma + dharma));
+  if (pick) save.picks[beat.id] = pick;
+  persist(); render();
+}
+function render(){
+  document.getElementById("intro").classList.toggle("hidden", !save.intro);
+  document.getElementById("app").classList.toggle("hidden", save.intro);
+  if (save.intro) return;
+  const heardN = Math.min(save.heard.length+1, BEATS.length);
+  document.getElementById("beatmeta").textContent = "Beat "+heardN+"/4";
+  document.getElementById("stance").textContent = stance();
+  document.getElementById("pip").style.left = ((save.dharma+100)/2)+"%" ;
+  document.getElementById("xptext").textContent = save.xp+" / 100 XP";
+  document.getElementById("fill").style.width = save.xp+"%";
+  const langs = [["sa","स"],["en","E"],["te","తె"],["all","A"]];
+  document.getElementById("langs").innerHTML = langs.map(([id,l])=>`<button type="button" class="${save.lang===id?"on":""}" data-lang="${id}">${l}</button>`).join("");
+  const modes = [["film","Film"],["page","Page"],["tale","Tale"],["text","Text"]];
+  document.getElementById("modes").innerHTML = modes.map(([id,l])=>`<button type="button" class="${save.mode===id?"on":""}" data-mode="${id}" title="${l}">${l[0]}</button>`).join("");
+  document.getElementById("beats").innerHTML = BEATS.map(b=>{
+    const heard = save.heard.includes(b.id);
+    const pick = b.choice && b.choice.options.find(o=>o.id===save.picks[b.id]);
+    const texts = lines(b.text).map((c,i)=>`<p class="${i===0 && (save.lang==="sa"||save.lang==="all")?"sa":"en"}">${c.replaceAll("<","")}</p>`).join("");
+    let action = "";
+    if (!heard && !b.choice) action = `<button class="act" data-hear="${b.id}" type="button">Mark heard · +${b.xp} XP</button>`;
+    if (!heard && b.choice) {
+      const p = lines(b.choice.prompt)[0];
+      action = `<p class="en">${p}</p>` + b.choice.options.map(o=>`<button class="choice" data-choice="${b.id}:${o.id}" type="button">${lines(o.label)[0]}<small>${o.dharma>0?"+":""}${o.dharma} dharma · +${o.xp} XP</small></button>`).join("");
+    }
+    const note = heard && pick ? lines(pick.note).map(c=>`<p class="note">${c}</p>`).join("") : (heard && !pick ? `<p class="en">Heard</p>` : "");
+    const h = save.mode==="film"?"16/9":save.mode==="page"?"16/7":"21/6";
+    const media = save.mode==="film" && b.video
+      ? `<video autoplay muted loop playsinline poster="${b.image}" src="${b.video}"></video>`
+      : `<img src="${b.image}" alt="">`;
+    const plate = save.mode==="text" ? "" : `<div class="plate" style="aspect-ratio:${h}">${media}</div>`;
+    return `<article class="beat">${plate}<p class="place">${b.place}</p>${texts}${note}${action}</article>`;
+  }).join("");
+  const done = BEATS.every(b=>save.heard.includes(b.id));
+  document.getElementById("cleared").classList.toggle("hidden", !done);
+  document.getElementById("clearnote").textContent = "The hearing is set. Your stance is "+stance().toLowerCase()+". The House of Lac is the next act — still sealed.";
+}
+document.getElementById("enter").onclick = ()=>{ save.intro=false; persist(); render(); };
+document.getElementById("again").onclick = ()=>{ save={ intro:true, dharma:0, xp:0, heard:[], picks:{}, lang:save.lang, mode:save.mode }; persist(); render(); };
+document.body.addEventListener("click", (e)=>{
+  const lang = e.target.closest("[data-lang]");
+  const mode = e.target.closest("[data-mode]");
+  const hearBtn = e.target.closest("[data-hear]");
+  const choice = e.target.closest("[data-choice]");
+  const panel = e.target.closest("[data-panel]");
+  if (lang){ save.lang=lang.dataset.lang; persist(); render(); }
+  if (mode){ save.mode=mode.dataset.mode; persist(); render(); }
+  if (hearBtn){ const b=BEATS.find(x=>x.id===hearBtn.dataset.hear); hear(b,0,0); }
+  if (choice){ const [bid,oid]=choice.dataset.choice.split(":"); const b=BEATS.find(x=>x.id===bid); const o=b.choice.options.find(x=>x.id===oid); hear(b,o.xp,o.dharma,o.id); }
+  if (panel) openPanel(panel.dataset.panel);
+});
+function openPanel(name){
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on", b.dataset.panel===name));
+  if (name==="read"){ document.getElementById("sheet").classList.add("hidden"); return; }
+  const done = BEATS.every(b=>save.heard.includes(b.id));
+  let body = "";
+  if (name==="map") body = PLACES.map((p,i)=>`<div class="place-line"><div class="dotcol"><span class="dot ${p[2]?"now":""}"></span>${i<PLACES.length-1?'<span class="stem"></span>':""}</div><div style="padding-bottom:16px"><div>${p[0]}</div><div class="en" style="margin:0;color:var(--mute)">${p[1]}</div>${p[2]?'<div class="place">You are here</div>':""}</div></div>`).join("");
+  if (name==="path") body = `<p class="en">Adi Parva · Adhyaya 1 · Beat ${Math.min(save.heard.length+1,4)}/4</p><p style="font-family:Instrument Serif,serif;font-size:3rem;margin-top:12px">${save.xp}<span style="font-size:1.2rem;color:var(--mute)"> / 100</span></p><p class="note">${stance()} · Level 1 of 100</p><div class="track" style="margin-top:12px"><div class="fill" style="width:${save.xp}%"></div></div>`;
+  if (name==="acts") body = ACTS.map(a=>`<div class="actcard"><p class="place">Act ${a[0]} · ${a[2]}</p><div style="font-family:Instrument Serif,serif;font-size:1.5rem">${a[1]}</div><p class="en">${a[3]}</p><p class="place">${a[4]?"Open":done?"Next — still being written":"Sealed"}</p></div>`).join("");
+  document.getElementById("sheet").className = "sheet";
+  document.getElementById("sheet").innerHTML = `<div class="card"><div class="row"><h2>${name==="map"?"Where you stand":name==="path"?"The path":"Acts"}</h2><button type="button" id="closesh" style="min-width:44px;min-height:44px">Close</button></div>${body}</div>`;
+  document.getElementById("closesh").onclick = ()=>{ document.getElementById("sheet").classList.add("hidden"); document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on", b.dataset.panel==="read")); };
+  document.getElementById("sheet").onclick = (ev)=>{ if (ev.target.id==="sheet") document.getElementById("closesh").click(); };
+}
+render();
+</script>
+</body>
+</html>

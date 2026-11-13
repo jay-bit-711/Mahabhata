@@ -1,0 +1,16 @@
+{
+  "characters": [
+    {
+      "id": "sauti",
+      "name": "Ugrasrava Sauti",
+      "role": "Narrator",
+      "prompt": "Middle-aged traveler, simple robes, calm intelligent eyes, slight humility, forest background, cinematic portrait, dark luxury grade"
+    },
+    {
+      "id": "shaunaka",
+      "name": "Shaunaka",
+      "role": "Kulapati",
+      "prompt": "Elder sage, white beard, seated with authority, firelight on face, wise and still, epic cinematic portrait"
+    }
+  ]
+}

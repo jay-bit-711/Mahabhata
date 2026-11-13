@@ -1,0 +1,46 @@
+{
+  "id": 1,
+  "title": "Naimisha",
+  "parva": "Adi Parva",
+  "adhyaya": 1,
+  "location": "Naimisha Forest",
+  "xpRequired": 100,
+  "blocks": [
+    {
+      "id": 1,
+      "xp": 20,
+      "visual": "Sauti approaching the ancient Naimisha satra under vast trees",
+      "prompt": "Cinematic wide shot, dusk light filtering through massive banyan trees, a lone traveler in simple robes walking toward a distant sacrificial ground, sages seated in quiet circles, warm firelight, epic scale, Rajamouli-inspired grandeur, dark cinematic grade",
+      "sa": "नारायणं नमस्कृत्य नरं चैव नरोत्तमम्।\nदेवीं सरस्वतीं चैव ततो जयमुदीरयेत् ॥",
+      "en": "Having bowed to Narayana and to Nara the foremost of men, and to the goddess Sarasvati, then let Jaya be uttered.",
+      "te": "నారాయణుని, నరోత్తమునైన నరుని, సరస్వతిని నమస్కరించి తరువాత जयను ఉదీరించవలి."
+    },
+    {
+      "id": 2,
+      "xp": 25,
+      "visual": "Sages seated at the twelve-year satra of Shaunaka",
+      "prompt": "Quiet gathering of sages around a sacred fire, ancient forest clearing, soft golden light, calm authority, cinematic still, dark luxury aesthetic",
+      "sa": "",
+      "en": "In the Naimisha forest, at the twelve-year sacrifice of Kulapati Shaunaka, the sages sat at ease.",
+      "te": "నైమిషారణ్యంలో శ౗నక కులపతి యొక్క ప్రారంభించిన ప్రతిజ్ఞాన సత్రంలో మహర్షులు కూర్చున్నారు."
+    },
+    {
+      "id": 3,
+      "xp": 25,
+      "visual": "Ugrasrava Sauti arrives with humility",
+      "prompt": "Traveler bowing slightly before seated sages, forest light, respectful posture, cinematic framing, warm and dark tones",
+      "sa": "",
+      "en": "Ugrasrava, son of Lomaharshana, a Sauti skilled in the Puranas, approached them with humility.",
+      "te": "లోమహర్షణ పుత్రుడైన ఉగ్రశ్రవుడు వినయముగా వారి సమీపించాడు."
+    },
+    {
+      "id": 4,
+      "xp": 30,
+      "visual": "The request to narrate the great Bharata",
+      "prompt": "Sages leaning forward slightly, one gesturing for the story to begin, firelight on faces, sense of beginning, epic stillness",
+      "sa": "",
+      "en": "The sages welcomed him and requested the narration of the great history of the Bharatas.",
+      "te": "మహర్షులు ఆయనను స్వాగతించి మహాభారత కథను అడిగారు."
+    }
+  ]
+}
