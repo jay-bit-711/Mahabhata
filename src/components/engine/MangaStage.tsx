@@ -81,6 +81,22 @@ export function MangaStage({
     if (rite === "cosmos") cosmosTone();
   }, [rite, shown, scene.id, audio]);
 
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && window.speechSynthesis) window.speechSynthesis.cancel();
+    };
+  }, [scene.id, shown]);
+
+  function hear() {
+    if (typeof window === "undefined" || !window.speechSynthesis || !beat) return;
+    window.speechSynthesis.cancel();
+    const text = lang === "te" ? beat.line.te : lang === "sa" ? beat.line.sa : beat.line.en;
+    const voice = new SpeechSynthesisUtterance(text);
+    voice.lang = lang === "te" ? "te-IN" : lang === "sa" ? "hi-IN" : "en-IN";
+    voice.rate = 0.92;
+    window.speechSynthesis.speak(voice);
+  }
+
   function reveal() {
     if (last || gate) return;
     const next = beats[shown + 1];
@@ -156,10 +172,15 @@ export function MangaStage({
         </div>
       ) : null}
       <div className="relative z-30 flex h-dvh flex-col justify-end px-6 pb-36">
-        <p className="text-[10px] tracking-[0.35em] text-mute uppercase">
-          {beat?.speaker ?? scene.speaker ?? "Narrator"}
-          {scene.place ? ` · ${scene.place}` : ""}
-        </p>
+        <div className="flex items-center gap-3">
+          <p className="text-[10px] tracking-[0.35em] text-mute uppercase">
+            {beat?.speaker ?? scene.speaker ?? "Narrator"}
+            {scene.place ? ` · ${scene.place}` : ""}
+          </p>
+          <button type="button" className="text-[10px] tracking-[0.35em] text-gold uppercase" onPointerDown={(e) => e.stopPropagation()} onClick={hear}>
+            Hear
+          </button>
+        </div>
         {beat ? (
           <BeatCard
             beat={beat}

@@ -21,6 +21,7 @@ export const EMPTY: Campaign = {
   intro: true,
   lang: "all",
   audio: false,
+  trials: [],
 };
 
 let state: Campaign = EMPTY;
@@ -48,6 +49,7 @@ export function hydrate() {
       unlocked: [...new Set([...(parsed.unlocked ?? []), ...writtenParvas()])],
       history: parsed.history ?? [],
       vows: parsed.vows ?? [],
+      trials: parsed.trials ?? [],
     };
     if (!findScene(state.cursor)) state = { ...state, cursor: EMPTY.cursor, intro: true };
     emit();
@@ -135,6 +137,11 @@ function nextCursor(cursor: Cursor): { cursor: Cursor; finishedParva: boolean } 
     return { cursor: { parva: cursor.parva, chapter: cursor.chapter + 1, scene: 0 }, finishedParva: false };
   }
   return { cursor, finishedParva: true };
+}
+
+export function markTrial(id: string) {
+  if (state.trials.includes(id)) return;
+  patch({ trials: [...state.trials, id] });
 }
 
 export function advance() {

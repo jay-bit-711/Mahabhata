@@ -106,4 +106,6 @@ export type Campaign = {
   intro: boolean;
   lang: Lang;
   audio: boolean;
+  /** Act ids whose trial was passed. */
+  trials: string[];
 };
