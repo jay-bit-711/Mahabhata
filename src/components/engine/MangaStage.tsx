@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { beatHit, cosmosTone, drip, heartbeat, sakugaSwell, shatterHit, silkStream, vowDrop } from "@/lib/engine/audio";
 import { bindVows } from "@/lib/engine/store";
-import type { Beat, Emotion, Lang, Line, Scene, Voice } from "@/lib/engine/types";
+import type { Beat, Lang, Line, Scene, Voice } from "@/lib/engine/types";
 
 function lines(text: Line, lang: Lang) {
   if (lang === "sa") return [text.sa];
@@ -10,18 +10,10 @@ function lines(text: Line, lang: Lang) {
   return [text.sa, text.en, text.te];
 }
 
-const MOOD: Record<Emotion, string> = {
-  still: "border-gold",
-  calm: "border-gold",
-  wrath: "border-blood",
-  grief: "border-mute",
-  sly: "border-cream",
-};
-
 const VOICE: Record<Voice, string> = {
-  whisper: "text-sm tracking-[0.14em] text-mute italic",
-  speak: "text-base leading-relaxed text-cream",
-  boom: "font-display text-4xl leading-tight text-gold",
+  whisper: "mt-4 font-display text-2xl leading-snug text-cream/80 italic",
+  speak: "mt-4 font-display text-4xl leading-tight text-cream",
+  boom: "mt-4 font-display text-5xl leading-none text-gold sm:text-6xl",
 };
 
 function blocked(beat: Beat | undefined, opened: boolean) {
@@ -50,6 +42,9 @@ export function MangaStage({
   const [shake, setShake] = useState(false);
   const frame = useRef(0);
   const heard = useRef<string | undefined>(undefined);
+  const downAt = useRef(0);
+  const passed = useRef(false);
+  const ended = useRef(true);
   const beats = scene.beats;
   const beat = beats[Math.min(shown, beats.length - 1)];
   const last = shown >= beats.length - 1;
@@ -102,6 +97,9 @@ export function MangaStage({
   }
 
   function beginHold() {
+    downAt.current = performance.now();
+    passed.current = false;
+    ended.current = false;
     setHold(true);
     const need = beat?.holdMs ?? (beat?.rite === "seal" ? 700 : 0);
     if (!need || opened) return;
@@ -110,6 +108,7 @@ export function MangaStage({
       const next = Math.min(1, (now - start) / need);
       setPct(next);
       if (next >= 1) {
+        passed.current = true;
         setOpened(true);
         return;
       }
@@ -120,9 +119,15 @@ export function MangaStage({
   }
 
   function endHold() {
+    if (ended.current) return;
+    ended.current = true;
+    const elapsed = performance.now() - downAt.current;
+    const held = passed.current;
     setHold(false);
     cancelAnimationFrame(frame.current);
-    if (!opened) setPct(0);
+    if (!opened && !held) setPct(0);
+    const needsHold = (Boolean(beat?.holdMs) || beat?.rite === "seal") && !opened && !held;
+    if (!needsHold && elapsed < 260) reveal();
   }
 
   const drained = scene.air === "mist" && rite !== "amber";
@@ -141,58 +146,38 @@ export function MangaStage({
       {rite === "amber" ? <Amber /> : null}
       {scene.sakuga && last && !gate && rite !== "cosmos" ? <Sakuga kind={scene.sakuga} /> : null}
       {!hidePlate && (scene.video || scene.image) ? (
-        <div className="plate mb-4">
+        <div className="stage-ground" aria-hidden="true">
           {scene.video ? (
             <video autoPlay muted loop playsInline poster={scene.image} src={scene.video} />
           ) : (
             <img src={scene.image} alt="" />
           )}
+          <div className="stage-shade" />
         </div>
       ) : null}
-      <div className="relative z-30">
-      <div className="mb-3 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className={"flex size-10 items-center justify-center rounded-full border font-display text-gold " + MOOD[beat?.emotion ?? scene.emotion ?? "still"]}>
-            {(beat?.speaker ?? scene.speaker ?? "—").slice(0, 1)}
-          </span>
-          <div>
-            <p className="text-sm text-cream">{beat?.speaker ?? scene.speaker ?? "Narrator"}</p>
-            <p className="text-xs tracking-widest text-mute uppercase">{scene.place}</p>
-          </div>
-        </div>
-        <button
-          type="button"
-          aria-pressed={lens}
-          onClick={() => setLens((v) => !v)}
-          className={"min-h-11 border px-3 text-xs tracking-widest uppercase " + (lens ? "border-gold text-gold" : "border-line text-mute")}
-        >
-          Intent
-        </button>
-      </div>
-      <div className="space-y-3">
-        {beats.slice(0, shown + 1).map((item, index) => (
-          <BeatCard
-            key={scene.id + index}
-            beat={item}
-            lang={lang}
-            fresh={index === shown}
-            peek={lens || (hold && index === shown) || (opened && index === shown && item.rite === "seal")}
-            jagged={item.rite === "shatter" || item.rite === "hair"}
-            ash={item.rite === "ash"}
-            progress={index === shown ? pct : 0}
-            onHold={index === shown ? { down: beginHold, up: endHold } : undefined}
-          />
-        ))}
-      </div>
-      {gate ? (
-        <p className="mt-4 text-xs tracking-widest text-gold uppercase">
-          {rite === "vow" ? "Hold. Let the name finish." : rite === "hair" ? "Hold. Lock the vow." : rite === "cosmos" ? "Hold. Time is speaking." : rite === "amber" ? "Hold. Heaven can wait." : "Hold. The tunnel is not in this tongue."}
+      <div className="relative z-30 flex h-dvh flex-col justify-end px-6 pb-36">
+        <p className="text-[10px] tracking-[0.35em] text-mute uppercase">
+          {beat?.speaker ?? scene.speaker ?? "Narrator"}
+          {scene.place ? ` · ${scene.place}` : ""}
         </p>
-      ) : !last ? (
-        <button type="button" className="mt-4 min-h-11 border border-gold px-4 text-xs tracking-widest text-gold uppercase" onClick={reveal}>
-          Next beat
-        </button>
-      ) : null}
+        {beat ? (
+          <BeatCard
+            beat={beat}
+            lang={lang}
+            peek={lens || hold || (opened && beat.rite === "seal")}
+            jagged={beat.rite === "shatter" || beat.rite === "hair"}
+            ash={beat.rite === "ash"}
+            progress={pct}
+            onHold={{ down: beginHold, up: endHold }}
+          />
+        ) : null}
+        {gate ? (
+          <p className="mt-6 text-[10px] tracking-[0.35em] text-gold uppercase">
+            {rite === "vow" ? "Hold" : rite === "hair" ? "Hold the vow" : rite === "cosmos" ? "Hold. Time is speaking." : rite === "amber" ? "Hold. Heaven can wait." : "Hold. The other tongue."}
+          </p>
+        ) : beat?.intent && !hold ? (
+          <p className="mt-6 text-[10px] tracking-[0.35em] text-mute uppercase">Hold</p>
+        ) : null}
       </div>
     </div>
   );
@@ -201,7 +186,6 @@ export function MangaStage({
 function BeatCard({
   beat,
   lang,
-  fresh,
   peek,
   jagged,
   ash,
@@ -210,7 +194,6 @@ function BeatCard({
 }: {
   beat: Beat;
   lang: Lang;
-  fresh: boolean;
   peek: boolean;
   jagged: boolean;
   ash: boolean;
@@ -222,7 +205,7 @@ function BeatCard({
   return (
     <button
       type="button"
-      className={"ink relative block w-full overflow-hidden border border-line bg-panel px-4 py-4 text-left " + (fresh ? "" : "opacity-80") + (ash ? " ash" : "")}
+      className={"ink relative block w-full py-2 text-left " + (ash ? " ash" : "")}
       onPointerDown={() => onHold?.down()}
       onPointerUp={() => onHold?.up()}
       onPointerLeave={() => onHold?.up()}
